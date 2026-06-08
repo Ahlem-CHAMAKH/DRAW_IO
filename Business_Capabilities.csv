@@ -1,0 +1,418 @@
+Domain:Business Capability,Short Name,Business Relevance,Parent Business Capability
+10.1.2.1 Business Enablement & Strategy,,Unknown,10.1.2 Enterprise Architecture
+10.1.2.1.1 Strategy and Planning​,,Unknown,10.1.2.1 Business Enablement & Strategy
+10.1.2.1.2 Innovation Management​,,Unknown,10.1.2.1 Business Enablement & Strategy
+10.1.2.1.3 Value Management​,,Unknown,10.1.2.1 Business Enablement & Strategy
+10.1.2.1.4 Business Architecture & Modelling​,,Unknown,10.1.2.1 Business Enablement & Strategy
+10.1.2.1.5 Opportunity Identification​,,Unknown,10.1.2.1 Business Enablement & Strategy
+10.1.2.1.6 Business Optimisation,,Unknown,10.1.2.1 Business Enablement & Strategy
+10.1.2.2 EA Management,,Unknown,10.1.2 Enterprise Architecture
+10.1.2.2.1 Standards Management​,,Unknown,10.1.2.2 EA Management
+10.1.2.2.2 Engagement Management​,,Unknown,10.1.2.2 EA Management
+10.1.2.2.3 Vendor Strategy​,,Unknown,10.1.2.2 EA Management
+10.1.2.2.4 Solution Management,,Unknown,10.1.2.2 EA Management
+10.1.2.3 Architecture Execution,,Unknown,10.1.2 Enterprise Architecture
+10.1.2.3.1 Trade-Off Analysis​,,Unknown,10.1.2.3 Architecture Execution
+10.1.2.3.2 Fit Assessments​,,Unknown,10.1.2.3 Architecture Execution
+10.1.2.3.3 Architecture Services​,,Unknown,10.1.2.3 Architecture Execution
+10.1.2.3.4 Workshops and Engineering,,Unknown,10.1.2.3 Architecture Execution
+10.1.2.4 Technology Lifecycle,,Unknown,10.1.2 Enterprise Architecture
+10.1.2.4.1 Architecture Change Management​,,Unknown,10.1.2.4 Technology Lifecycle
+10.1.2.4.2 Enterprise Data Management​,,Unknown,10.1.2.4 Technology Lifecycle
+10.1.2.4.3 Application Portfolio Management​,,Unknown,10.1.2.4 Technology Lifecycle
+10.1.2.4.4 Architecture Planning​,,Unknown,10.1.2.4 Technology Lifecycle
+10.1.2.4.5 Technology Innovation (EA),,Unknown,10.1.2.4 Technology Lifecycle
+10.1.2.5 Competency Management,,Unknown,10.1.2 Enterprise Architecture
+10.1.2.5.1 Market Trend Analysis​,,Unknown,10.1.2.5 Competency Management
+10.1.2.5.2 Competency Management & Advancement​,,Unknown,10.1.2.5 Competency Management
+10.1.2.5.3 Collaboration,,Unknown,10.1.2.5 Competency Management
+10.1.2.6 Enterprise Architecture Governance,,Unknown,10.1.2 Enterprise Architecture
+10.1.2.6.1 Architecture Review Board​,,Unknown,10.1.2.6 Enterprise Architecture Governance
+10.1.2.6.2 Architecture Guidance Team​,,Unknown,10.1.2.6 Enterprise Architecture Governance
+10.1.2.6.3 Executive Steering​,,Unknown,10.1.2.6 Enterprise Architecture Governance
+10.1.2.6.4 Architecture Risk Management,,Unknown,10.1.2.6 Enterprise Architecture Governance
+9.3.9.1 Cash Position Management,,Business Operating,9.3.9 Cash & Treasury Management
+9.3.9.2 Liquidity Management,,,9.3.9 Cash & Treasury Management
+9.3.9.1.1 Daily Cash Positioning,,Mission Critical,9.3.9.1 Cash Position Management
+9.3.9.1.2 Cash Flow Forecasting,,,9.3.9.1 Cash Position Management
+9.3.9.1.3 1.3 Intercompany Cash Flows,,,9.3.9.1 Cash Position Management
+9.3.9.3 Treasury Operations & Banking Relations,,,9.3.9 Cash & Treasury Management
+9.3.9.1.4 1.4 Zero-Balance Account Setup,,,9.3.9.1 Cash Position Management
+9.3.9.1.5 1.5 Cash Pooling Management,,,9.3.9.1 Cash Position Management
+9.3.9.2.1 2.1 Short-Term Investments,,,9.3.9.2  Liquidity Management
+9.3.9.2.2 Working Capital Planning,,,9.3.9.2  Liquidity Management
+9.3.9.2.3 Liquidity Stress Testing,,,9.3.9.2  Liquidity Management
+9.3.9.2.4 Liquidity Reserves Management,,,9.3.9.2  Liquidity Management
+9.3.9.2.5 Loan and Credit Facility Mgmt,,,9.3.9.2  Liquidity Management
+9.3.9.3.1 Bank Account Management,,,9.3.9.3  Treasury Operations & Banking Relations
+9.3.9.3.2 Bank Connectivity,,,9.3.9.3  Treasury Operations & Banking Relations
+9.3.9.3.3 Payment Execution,,,9.3.9.3  Treasury Operations & Banking Relations
+9.3.9.3.4 Fee Monitoring,,,9.3.9.3  Treasury Operations & Banking Relations
+9.3.9.3.5 Treasury Outsourcing Mgmt,,,9.3.9.3  Treasury Operations & Banking Relations
+"9.3.9.4 Treasury Controls, Risk & Compliance Mgmt",,,9.3.9 Cash & Treasury Management
+9.3.9.4.1 FX (Foreign Exchange)  Risk Management,,,"9.3.9.4 Treasury Controls, Risk & Compliance Mgmt"
+9.3.9.4.2 IR (Interest Rate) Risk Mgmt,,,"9.3.9.4 Treasury Controls, Risk & Compliance Mgmt"
+9.3.9.4.3 Treasury Policy Governance (Planned ),,,"9.3.9.4 Treasury Controls, Risk & Compliance Mgmt"
+9.3.9.5 Treasury Reporting & Reconciliation,,,9.3.9 Cash & Treasury Management
+9.3.9.5.1 Cash Reconciliation,,,9.3.9.5 Treasury Reporting & Reconciliation
+9.3.9.5.2 Treasury Audit Trail Mgmt,,,9.3.9.5 Treasury Reporting & Reconciliation
+9.3.9.5.3 Performance Metrics & KPIs (Planned),,,9.3.9.5 Treasury Reporting & Reconciliation
+9.11.1.1 Internal Analysis,,Business Evolving,9.11.1 Strategic planning
+9.11.1.2 Environmental Scanning,,Business Evolving,9.11.1 Strategic planning
+9.11.1.3 Strategy Development,,Business Evolving,9.11.1 Strategic planning
+9.11.1.4 Strategy Matching,,Business Evolving,9.11.1 Strategic planning
+9.11.1.5 Plan Definition,,Business Evolving,9.11.1 Strategic planning
+9.11.1.6 Plan Development,,Business Evolving,9.11.1 Strategic planning
+9.11.1.7 Plan Matching,,Business Evolving,9.11.1 Strategic planning
+9.11.1.8 Objective Management,,Business Evolving,9.11.1 Strategic planning
+9.11.1.9 Strategic Alignment Across Organization,,Business Evolving,9.11.1 Strategic planning
+9.11.1.10 Resource Allocation,,Business Evolving,9.11.1 Strategic planning
+9.11.1.11 Financial Planning,,Business Evolving,9.11.1 Strategic planning
+9.11.1.12 Strategic Plan Communication & Dissemination,,Business Evolving,9.11.1 Strategic planning
+9.11.1.13 Scenario Planning,,Business Evolving,9.11.1 Strategic planning
+9.11.4.1 Value Proposition Design,,Business Evolving,9.11.4 Business Model Management
+9.11.4.2 Maintain business Model,,Business Evolving,9.11.4 Business Model Management
+9.11.4.3 Business model governance,,Business Evolving,9.11.4 Business Model Management
+9.11.4.4 Revenue Model Design,,Business Evolving,9.11.4 Business Model Management
+9.11.4.5 Channel Strategy,,Business Evolving,9.11.4 Business Model Management
+9.11.4.6 Customer Segmentation,,Business Evolving,9.11.4 Business Model Management
+9.11.6.1 Portfolio Definition,,Business Evolving,9.11.6 Portfolio and Project Management
+9.11.6.2 Project Definition,,Business Evolving,9.11.6 Portfolio and Project Management
+9.11.6.3 Project Prioritization,,Business Evolving,9.11.6 Portfolio and Project Management
+9.11.6.4 Action Item Management,,Business Evolving,9.11.6 Portfolio and Project Management
+9.11.5.1 Determine business value,,Mission Critical,9.11.5 Strategy Value Creation
+9.11.5.2 Identify business value drivers,,Mission Critical,9.11.5 Strategy Value Creation
+9.11.5.3 Innovation Management,,Mission Critical,9.11.5 Strategy Value Creation
+9.11.7.2 Initiative Definition,,Business Evolving,9.11.7 Strategic Initiative Management
+9.11.7.3 Initiative Alignment,,Business Evolving,9.11.7 Strategic Initiative Management
+9.11.7.4 Initiative Scope Management,,Business Evolving,9.11.7 Strategic Initiative Management
+9.11.7.5 strategic initiatives Prioritizing,,Business Evolving,9.11.7 Strategic Initiative Management
+9.11.7.6 Initiative Risk Management,,Business Evolving,9.11.7 Strategic Initiative Management
+9.11.7.7 Initiative Evaluation & measurement (Benefit Management),,Business Evolving,9.11.7 Strategic Initiative Management
+9.11.8.1 Organization Structure Management,,Business Evolving,9.11.8 Strategy Execution
+9.11.8.2 Strategy Risk   Management,,Business Evolving,9.11.8 Strategy Execution
+9.11.8.3 Initiative Performance Management,,Business Evolving,9.11.8 Strategy Execution
+9.11.8.4 Progress Monitoring,,Business Evolving,9.11.8 Strategy Execution
+9.11.8.5 Strategy Execution Control,,Business Evolving,9.11.8 Strategy Execution
+9.11.9.1 Change Planning,,Business Evolving,9.11.9 Business Change Management
+9.11.9.2 Stakeholder Engagement,,Business Evolving,9.11.9 Business Change Management
+9.11.9.3 Strategic Communications,,Business Evolving,9.11.9 Business Change Management
+9.11.9.4 Change Monitoring & Reporting,,Business Evolving,9.11.9 Business Change Management
+9.11.3.1 Strategic Issue Identification,,Mission Critical,9.11.3 Studies & research
+9.11.3.2 Market Expansion,,Mission Critical,9.11.3 Studies & research
+9.11.3.3 Regulatory & Legislative Analysis,,Business Evolving,9.11.3 Studies & research
+9.11.3.4 Benchmark Analysis,,Business Evolving,9.11.3 Studies & research
+9.2.4.1 Employees Volunteering,,Business Evolving,9.2.4 Corporate Social Responsibility
+9.11.2.1 Measures Establishing,,Business Enabling,9.11.2 Strategic Performance Management
+9.11.2.2 Performance Reporting,,Business Enabling,9.11.2 Strategic Performance Management
+9.11.2.3 Performance Tracking,,Business Enabling,9.11.2 Strategic Performance Management
+9.11.2.4 Strategy Continuous Alignment,,Business Enabling,9.11.2 Strategic Performance Management
+9.11.2.5 Strategy Continuous Improvement,,Business Enabling,9.11.2 Strategic Performance Management
+4.1.6 Retiremnt Planing(New),,,4.1 Value Added Services
+12 Collaboration & Digital Workplace,,Business Enabling,
+12.1 Workspace Management,,Business Enabling,12 Collaboration & Digital Workplace
+12.2 Task &  Work Management,,Business Enabling,12 Collaboration & Digital Workplace
+12.3 Team & Membership Management,,Business Enabling,12 Collaboration & Digital Workplace
+12.4 Calendar & Scheduling,,Business Enabling,12 Collaboration & Digital Workplace
+12.5 Meeting Management,,Business Enabling,12 Collaboration & Digital Workplace
+12.6 Visual Collaboration / Whiteboarding,,Business Enabling,12 Collaboration & Digital Workplace
+12.7 Internal Social Networking & Engagement,,Business Enabling,12 Collaboration & Digital Workplace
+12.8 Entreprise Search & Discovery,,Business Enabling,12 Collaboration & Digital Workplace
+12.9 Notification & Alert Management,,Business Enabling,12 Collaboration & Digital Workplace
+12.10 AI-Assisted Productivity / Conversational Assistant,,Business Enabling,12 Collaboration & Digital Workplace
+1 Business Core / Financial,,Mission Critical,
+2 Business Core / Medical & Occupational,,Mission Critical,
+3 Business Core / Pension And Insurance,,Mission Critical,
+4 Business Core / Value Added,,Mission Critical,
+5 Business Integration,,Business Enabling,
+6 Channels,,Business Enabling,
+7 Core Enabler,,Mission Critical,
+8 Data & Analytics,,Business Operating,
+9 Enterprise and Business Support Functions,,Business Enabling,
+10 Information Technology Management,,Business Evolving,
+11 Product Growth and Business Service Management,,Business Evolving,
+1.1 Financial Services Management,,Business Enabling,1 Business Core / Financial
+"2.1 Health, Medical & Occupational Management (Planned)",,Mission Critical,2 Business Core / Medical & Occupational
+3.1 Collection Management,,Mission Critical,3 Business Core / Pension And Insurance
+3.2 Employer-Relations Management,,Mission Critical,3 Business Core / Pension And Insurance
+3.3 Insurance & Pension Administration,,Mission Critical,3 Business Core / Pension And Insurance
+4.1 Value Added Services,,Mission Critical,4 Business Core / Value Added
+5.1 Partnerships Management,,Business Enabling,5 Business Integration
+6.1 Channel Management,,Business Enabling,6 Channels
+7.1 Asset Management,,Mission Critical,7 Core Enabler
+7.2 Debt Management,,Business Enabling,7 Core Enabler
+7.3 Financial Sustainability,,Mission Critical,7 Core Enabler
+7.4 Fraud Detection & Management,,Mission Critical,7 Core Enabler
+7.5 Insurance Compliance,,Mission Critical,7 Core Enabler
+7.6 Payments Management & Controls,,Mission Critical,7 Core Enabler
+8.1 Data Architecture,,Business Operating,8 Data & Analytics
+8.2 Data Management,,Business Operating,8 Data & Analytics
+8.3 Data Value Realization,,Business Operating,8 Data & Analytics
+9.1 Administration,,Business Enabling,9 Enterprise and Business Support Functions
+9.2 Communication Management,,Business Enabling,9 Enterprise and Business Support Functions
+9.3 Finance,,Business Enabling,9 Enterprise and Business Support Functions
+9.4 Gov. & Compliance,,Business Operating,9 Enterprise and Business Support Functions
+9.5 Human Resources,,Business Operating,9 Enterprise and Business Support Functions
+9.6 Internal Audit,,Business Enabling,9 Enterprise and Business Support Functions
+9.7 Legal Services,,Business Enabling,9 Enterprise and Business Support Functions
+9.8 Policy,,Business Enabling,9 Enterprise and Business Support Functions
+9.9 Procurement,,Business Enabling,9 Enterprise and Business Support Functions
+9.10 Risk Management,,Business Enabling,9 Enterprise and Business Support Functions
+9.11 Strategy Management,,Business Evolving,9 Enterprise and Business Support Functions
+9.12 Venture Management,,Business Evolving,9 Enterprise and Business Support Functions
+10.1 IT Strategy,,Business Evolving,10 Information Technology Management
+10.2 Platform Management,,Business Enabling,10 Information Technology Management
+10.3 Product Delivery Management,,Business Enabling,10 Information Technology Management
+10.4 Product Management,,Business Enabling,10 Information Technology Management
+10.5 Technology Management,,Business Enabling,10 Information Technology Management
+11.1 Customer / Participant Relationship Management,,Business Evolving,11 Product Growth and Business Service Management
+11.2 Customer Experience Management,,Business Evolving,11 Product Growth and Business Service Management
+11.3 Product Marketing,,Business Evolving,11 Product Growth and Business Service Management
+11.4 Products/Service Management,,Business Evolving,11 Product Growth and Business Service Management
+1.1.1 Consolidated view of financials Management,,Mission Critical,1.1 Financial Services Management
+1.1.2 Financial planning courses Management.,,Mission Critical,1.1 Financial Services Management
+1.1.3 Long term saving Management,,Mission Critical,1.1 Financial Services Management
+1.1.4 Medium term Saving Management,,Mission Critical,1.1 Financial Services Management
+1.1.5 Saving & benefits simulator Management,,Mission Critical,1.1 Financial Services Management
+1.1.6 Wallet Management,,Mission Critical,1.1 Financial Services Management
+2.1.1 Digital medical records Management (Planned),,Mission Critical,"2.1 Health, Medical & Occupational Management (Planned)"
+2.1.2 Emergency assistance Management (Planned),,Mission Critical,"2.1 Health, Medical & Occupational Management (Planned)"
+2.1.3 Health & wellness tracking Management (Planned),,Mission Critical,"2.1 Health, Medical & Occupational Management (Planned)"
+2.1.4 Medical diagnostics (Planned),,Mission Critical,"2.1 Health, Medical & Occupational Management (Planned)"
+2.1.5 Medical services and claims,,Mission Critical,"2.1 Health, Medical & Occupational Management (Planned)"
+2.1.6 Medication Management (Planned),,Mission Critical,"2.1 Health, Medical & Occupational Management (Planned)"
+2.1.7 Occupational health & safety prevention,,Mission Critical,"2.1 Health, Medical & Occupational Management (Planned)"
+2.1.8 Occupational health & safety training (Planned),,Mission Critical,"2.1 Health, Medical & Occupational Management (Planned)"
+2.1.9 Online consultation Management (Planned),,Mission Critical,"2.1 Health, Medical & Occupational Management (Planned)"
+2.1.10 Online medical appointments Management,,Mission Critical,"2.1 Health, Medical & Occupational Management (Planned)"
+3.1.1 Participant data collection,,Business Enabling,3.1 Collection Management
+3.1.2 Premium calculation,,Business Enabling,3.1 Collection Management
+3.1.3 Premium collection,,Business Enabling,3.1 Collection Management
+3.1.4 Sanctions and Penalties,,Business Enabling,3.1 Collection Management
+3.1.5 Arrears management,,Business Enabling,3.1 Collection Management
+3.2.1 Employer Education(New),,Business Enabling,3.2 Employer-Relations Management
+3.2.2 Employer interaction Management,,Business Enabling,3.2 Employer-Relations Management
+3.2.3 Employer Onboarding,,Business Enabling,3.2 Employer-Relations Management
+3.2.4 Employer support,,Business Enabling,3.2 Employer-Relations Management
+3.3.1 Capital administration,,Mission Critical,3.3 Insurance & Pension Administration
+3.3.2 Claims Administration,,Mission Critical,3.3 Insurance & Pension Administration
+3.3.3 Claims Management,,Mission Critical,3.3 Insurance & Pension Administration
+3.3.4 Custom administration,,Mission Critical,3.3 Insurance & Pension Administration
+3.3.5 Policy Administration,,Mission Critical,3.3 Insurance & Pension Administration
+4.1.1 Assisted Living Management (Planned),,Business Enabling,4.1 Value Added Services
+4.1.2 Career services Management (Planned),,Mission Critical,4.1 Value Added Services
+4.1.3 Job applications Management (Planned),,Mission Critical,4.1 Value Added Services
+4.1.4 Online courses Management (Planned),,Mission Critical,4.1 Value Added Services
+4.1.5 Post-retirement Management (New),,Business Evolving,4.1 Value Added Services
+5.1.1 Discovery & Negotiation,,Business Enabling,5.1 Partnerships Management
+5.1.2 Ecosystem Management,,Business Enabling,5.1 Partnerships Management
+5.1.3 Partnership operation Management,,Business Enabling,5.1 Partnerships Management
+5.1.4 Value added services,,Business Enabling,5.1 Partnerships Management
+5.1.5 Partner Onboarding,,Business Enabling,5.1 Partnerships Management
+6.1.1 Cross – channel mechanisms,,Business Enabling,6.1 Channel Management
+6.1.2 Multi-channel front-end,,Business Enabling,6.1 Channel Management
+7.1.1 Asset Disposal,,Mission Critical,7.1 Asset Management
+7.1.2 Asset Valuation,,Mission Critical,7.1 Asset Management
+7.1.3 Client & Fund accounting,,Mission Critical,7.1 Asset Management
+7.1.4 Fiduciary Management,,Mission Critical,7.1 Asset Management
+7.1.5 Investment operations,,Mission Critical,7.1 Asset Management
+7.1.6 Investment Research,,Mission Critical,7.1 Asset Management
+7.1.7 Investment Risk & Performance Management,,Mission Critical,7.1 Asset Management
+7.1.8 Investment Dashboarding & Reporting,,Mission Critical,7.1 Asset Management
+7.1.9 Portfolio Management,,Mission Critical,7.1 Asset Management
+7.1.10 Trading,,Mission Critical,7.1 Asset Management
+7.2.1 Debt Calculation,,Business Enabling,7.2 Debt Management
+7.2.2 Debt Management & Recovery,,Business Enabling,7.2 Debt Management
+7.3.1 Fund Management,,Mission Critical,7.3 Financial Sustainability
+7.3.2 ALM / LDI,,Mission Critical,7.3 Financial Sustainability
+7.3.3 ESG Management,,Mission Critical,7.3 Financial Sustainability
+7.3.4 Financial Risk Management,,Mission Critical,7.3 Financial Sustainability
+7.3.5 Financial Dashboarding and Reporting(New),,Business Operating,7.3 Financial Sustainability
+7.3.6 Actuarial Calculations,,Business Operating,7.3 Financial Sustainability
+7.4.1 Investigations & Case Management,,Business Operating,7.4 Fraud Detection & Management
+7.4.2 Monitoring and Profiling,,Business Operating,7.4 Fraud Detection & Management
+7.4.3 Violation Detection,,Business Operating,7.4 Fraud Detection & Management
+7.4.4 Fraud Detection,,Business Operating,7.4 Fraud Detection & Management
+7.4.5 Fraud Prevention,,Business Operating,7.4 Fraud Detection & Management
+7.4.6 Fraud Reporting,,Business Operating,7.4 Fraud Detection & Management
+7.4.7 Fraud-Related Debt & Sanction Management,,Business Operating,7.4 Fraud Detection & Management
+7.5.1 Inspection,,Business Operating,7.5 Insurance Compliance
+7.6.1 Claims Payment,,Mission Critical,7.6 Payments Management & Controls
+7.6.2 Deductions and Adjustments,,Mission Critical,7.6 Payments Management & Controls
+7.6.3 Payment Eligibility management,,Mission Critical,7.6 Payments Management & Controls
+7.6.4 Payments Approval,,Mission Critical,7.6 Payments Management & Controls
+7.6.5 Payments Calculations,,Mission Critical,7.6 Payments Management & Controls
+7.6.6 Payments Issuance,,Mission Critical,7.6 Payments Management & Controls
+7.6.7 Reconciliation & Under/Over Payment,,Mission Critical,7.6 Payments Management & Controls
+7.6.8 Transaction Notifications,,Mission Critical,7.6 Payments Management & Controls
+8.1.1 Data Ingestion,,Business Enabling,8.1 Data Architecture
+8.1.2 Data Transformation,,Business Enabling,8.1 Data Architecture
+8.1.3 Data Provisioning & Modelling,,Business Enabling,8.1 Data Architecture
+8.1.4 Data Access,,Business Enabling,8.1 Data Architecture
+8.1.5 Data Consumption,,Business Enabling,8.1 Data Architecture
+8.2.1 Document & Content Management,,Business Enabling,8.2 Data Management
+8.2.2 Data Catalog & Metadata Management,,Business Enabling,8.2 Data Management
+8.2.3 Data Quality,,Business Enabling,8.2 Data Management
+8.2.4 Data Sharing & Interoperability,,Business Enabling,8.2 Data Management
+8.2.5 Reference & Master Data Management,,Business Enabling,8.2 Data Management
+8.2.6 Data Governance,,Business Enabling,8.2 Data Management
+8.3.1 Reporting & Visualization,,Business Enabling,8.3 Data Value Realization
+8.3.2 AI & Advanced Analytics,,Business Enabling,8.3 Data Value Realization
+8.3.3 Open Data,,Business Enabling,8.3 Data Value Realization
+8.3.4 Data Monetization,,Business Enabling,8.3 Data Value Realization
+9.1.1 Document & Archiving Management,,Business Operating,9.1 Administration
+9.1.2 Facilities management,,Business Operating,9.1 Administration
+9.1.3 General Services,,Business Operating,9.1 Administration
+9.1.4 Security & Safety Management,,Business Operating,9.1 Administration
+9.2.1 Correspondence Management,,Business Enabling,9.2 Communication Management
+9.2.2 Communication channels,,Business Enabling,9.2 Communication Management
+9.2.3 Content Management,,Business Enabling,9.2 Communication Management
+9.2.4 Corporate Social Responsibility,,Business Enabling,9.2 Communication Management
+9.2.5 Digital communication,,Business Enabling,9.2 Communication Management
+9.2.6 Media Communication,,Business Enabling,9.2 Communication Management
+9.2.7 Public relations,,Business Enabling,9.2 Communication Management
+9.3.1 Accounting and reporting,,Business Operating,9.3 Finance
+9.3.2 Accounts Payable and Expenses Reimbursement,,Business Operating,9.3 Finance
+"9.3.3 Budgeting, Planning, Forecasting",,Business Operating,9.3 Finance
+9.3.4 Control & monitoring,,Business Operating,9.3 Finance
+9.3.5 Corporate Finance,,Business Operating,9.3 Finance
+9.3.6 Fixed-Asset Accounting,,Business Operating,9.3 Finance
+9.3.7 Investment reporting,,Business Operating,9.3 Finance
+9.3.8 Physical Asset Management,,Business Operating,9.3 Finance
+9.3.9 Cash & Treasury Management,,Business Operating,9.3 Finance
+9.4.1 Committees & Board gov.,,Business Operating,9.4 Gov. & Compliance
+9.4.2 Compliance & Regulations advisory,,Business Operating,9.4 Gov. & Compliance
+9.4.3 Compliance Reporting,,Business Operating,9.4 Gov. & Compliance
+9.4.4 Regulations Management,,Business Operating,9.4 Gov. & Compliance
+9.5.1 Capacity Planning,,Business Operating,9.5 Human Resources
+9.5.2 Competencies & skills Management,,Business Operating,9.5 Human Resources
+9.5.3 Employee Development & Onboarding,,Business Operating,9.5 Human Resources
+9.5.4 Employee Performance management,,Business Operating,9.5 Human Resources
+9.5.5 Employee services & Relations,,Business Operating,9.5 Human Resources
+9.5.6 Enterprise culture entrenchment,,Business Operating,9.5 Human Resources
+9.5.7 New ways of working (New),,Business Operating,9.5 Human Resources
+9.5.8 Organizational development  & Management,,Business Operating,9.5 Human Resources
+9.5.9 Payroll Management,,Business Operating,9.5 Human Resources
+9.5.10 Talent Acquisition & Management,,Business Operating,9.5 Human Resources
+9.5.11 Incentives & Recognition Management,,Business Operating,9.5 Human Resources
+9.6.1 Financial Audit,,Business Operating,9.6 Internal Audit
+9.6.2 IT audit,,Business Operating,9.6 Internal Audit
+9.6.3 Operation Audit,,Business Operating,9.6 Internal Audit
+9.6.4 Quality Audit,,Business Operating,9.6 Internal Audit
+9.7.1 Agreement Management,,Business Operating,9.7 Legal Services
+9.7.2 Contract & Legal advisory services,,Business Operating,9.7 Legal Services
+9.7.3 Legal Case Management,,Business Operating,9.7 Legal Services
+9.7.4 Legal Objection Management,,Business Operating,9.7 Legal Services
+9.8.1 Policy Analysis And Review,,Business Evolving,9.8 Policy
+9.8.2 Policy Implementation,,Business Evolving,9.8 Policy
+9.8.3 Policy/Legislative Development,,Business Evolving,9.8 Policy
+9.9.1 Category Management,,Business Operating,9.9 Procurement
+9.9.2 Invoice Management,,Business Operating,9.9 Procurement
+9.9.3 Procurement Compliance,,Business Operating,9.9 Procurement
+9.9.4 Procurement Reporting,,Business Operating,9.9 Procurement
+9.9.5 Procurement Planning,,Business Operating,9.9 Procurement
+9.9.6 Sourcing & Contract Management,,Business Operating,9.9 Procurement
+9.9.7 Vendor & Supplier Management,,Business Operating,9.9 Procurement
+9.10.1 Business continuity,,Business Operating,9.10 Risk Management
+9.10.2 Cybersecurity,,Business Operating,9.10 Risk Management
+9.10.3 Enterprise Risk Management,,Business Operating,9.10 Risk Management
+9.10.4 Remediation Efforts Management,,Business Operating,9.10 Risk Management
+9.11.1 Strategic planning,,Business Evolving,9.11 Strategy Management
+9.11.2 Strategic Performance Management,,Business Evolving,9.11 Strategy Management
+9.11.3 Studies & research,,Business Evolving,9.11 Strategy Management
+9.11.4 Business Model Management,,Business Evolving,9.11 Strategy Management
+9.11.5 Strategy Value Creation,,Mission Critical,9.11 Strategy Management
+9.11.6 Portfolio and Project Management,,Business Evolving,9.11 Strategy Management
+9.11.7 Strategic Initiative Management,,Business Evolving,9.11 Strategy Management
+9.11.8 Strategy Execution,,Business Evolving,9.11 Strategy Management
+9.11.9 Business Change Management,,Business Evolving,9.11 Strategy Management
+9.12.1 Business and IT Venture Management (New),,Business Evolving,9.12 Venture Management
+10.1.1 Technology Strategy (Planned),,Business Evolving,10.1 IT Strategy
+10.1.2 Enterprise Architecture,,Business Evolving,10.1 IT Strategy
+10.1.3 Investment Portfolio Planning & Management,,Business Evolving,10.1 IT Strategy
+10.1.4 Ecosystem & Partnerships Strategy (New),,Business Evolving,10.1 IT Strategy
+10.1.5 Talent & Workforce Strategy (New),,Business Evolving,10.1 IT Strategy
+10.1.6 IT Risk & Technology Security Strategy (New),,Business Evolving,10.1 IT Strategy
+10.2.1 Technology & Infrastructure,,Business Operating,10.2 Platform Management
+10.2.2 Moden Eng. Enablement,,Business Operating,10.2 Platform Management
+10.3.1 IT Program & Project Management,,Business Enabling,10.3 Product Delivery Management
+10.3.2 Solution Architecture,,Business Enabling,10.3 Product Delivery Management
+10.3.3 Product & Service Design,,Business Enabling,10.3 Product Delivery Management
+10.3.4 Product & Service Development,,Business Enabling,10.3 Product Delivery Management
+10.3.5 Release & Deployment Management,,Business Enabling,10.3 Product Delivery Management
+10.4.1 Business and IT Strategy Alignment,,Business Enabling,10.4 Product Management
+10.4.2 Business Demand Management,,Business Enabling,10.4 Product Management
+10.4.3 IT Supplier Management,,Business Enabling,10.4 Product Management
+10.4.4 Product Performance Management,,Business Enabling,10.4 Product Management
+10.4.5 Product Quality Management,,Business Enabling,10.4 Product Management
+10.4.6 Digital Product Marketing,,Business Enabling,10.4 Product Management
+10.4.7 Technology innovation,,Business Enabling,10.4 Product Management
+10.5.1 Technology Governance,,Business Enabling,10.5 Technology Management
+10.5.2 Technology Financial Management (New),,Business Enabling,10.5 Technology Management
+10.5.3 IT Compliance & Quality Management,,Business Enabling,10.5 Technology Management
+10.5.4 Technology Talent Management,,Business Enabling,10.5 Technology Management
+10.5.5 IT Organizational Change Enablement(New),,Business Enabling,10.5 Technology Management
+10.5.6 IT Knowledge Management,,Business Enabling,10.5 Technology Management
+11.1.1 Customer relationship management,,Business Evolving,11.1 Customer / Participant Relationship Management
+11.2.1 Customer insights,,Business Evolving,11.2 Customer Experience Management
+11.2.2 Customer journeys,,Business Evolving,11.2 Customer Experience Management
+11.2.3 Customer segmentation,,Business Evolving,11.2 Customer Experience Management
+11.2.4 UX Design,,Business Evolving,11.2 Customer Experience Management
+11.2.5 Value proposition,,Business Evolving,11.2 Customer Experience Management
+11.3.1 Acquisition and Growth Performance Management(New),,Business Evolving,11.3 Product Marketing
+11.3.2 Acquisition and Growth Strategy(New),,Business Evolving,11.3 Product Marketing
+11.3.3 Campaign & Brand Management,,Business Evolving,11.3 Product Marketing
+11.3.4 Digital Marketing,,Business Evolving,11.3 Product Marketing
+11.3.5 Growth Management,,Business Evolving,11.3 Product Marketing
+11.3.6 Market Management,,Business Evolving,11.3 Product Marketing
+11.3.7 Personalized Engagement,,Business Evolving,11.3 Product Marketing
+11.3.8 Subsidiary marketing Management,,Business Evolving,11.3 Product Marketing
+11.4.1 Domain Product Management,,Business Evolving,11.4 Products/Service Management
+11.4.2 Govern Product/ Service Development Program,,Business Evolving,11.4 Products/Service Management
+11.4.3 Product / Service Performance Management,,Business Evolving,11.4 Products/Service Management
+11.4.4 Product deployment,,Business Evolving,11.4 Products/Service Management
+11.4.5 Product Design & Development,,Business Evolving,11.4 Products/Service Management
+11.4.6 Product Portfolio Management,,Business Evolving,11.4 Products/Service Management
+11.4.7 Product price determination,,Business Evolving,11.4 Products/Service Management
+11.4.8 Service Delivery Management,,Business Evolving,11.4 Products/Service Management
+3.3.3.1 Claim Communication,,Business Enabling,3.3.3 Claims Management
+3.3.3.2 Claim Evaluation / Validation,,Business Operating,3.3.3 Claims Management
+7.5.1.1 Inspection Incentives Management,,Business Operating,7.5.1 Inspection
+7.5.1.2 Inspection Policies Management,,Business Operating,7.5.1 Inspection
+9.2.5.1 Emergency Notifications and Alerts,,Business Operating,9.2.5 Digital communication
+9.2.5.2 Social Communication Management,,Business Operating,9.2.5 Digital communication
+9.9.7.1 Supplier Performance,,Business Operating,9.9.7 Vendor & Supplier Management
+9.9.7.2 Supplier Risk,,Business Operating,9.9.7 Vendor & Supplier Management
+9.10.2.1 Detect,,Business Operating,9.10.2 Cybersecurity
+9.10.2.2 Identify,,Business Operating,9.10.2 Cybersecurity
+9.10.2.3 Protect,,Business Operating,9.10.2 Cybersecurity
+9.10.2.4 Recover,,Business Operating,9.10.2 Cybersecurity
+9.10.2.5 Response,,Business Operating,9.10.2 Cybersecurity
+9.11.7.1 Strategic planning and direction-setting to achieve organizational objectives and goals.,,Business Operating,
+10.2.1.1 Service Management,,Business Operating,10.2.1 Technology & Infrastructure
+10.2.1.2 Service Operations,,Business Operating,10.2.1 Technology & Infrastructure
+10.2.1.3 Infrastructure Operations,,Business Operating,10.2.1 Technology & Infrastructure
+10.2.1.4 Technology Security Operations,,Business Operating,10.2.1 Technology & Infrastructure
+10.2.1.5 Technology Change Management,,Business Operating,10.2.1 Technology & Infrastructure
+10.2.2.1 DevOps,,Business Enabling,10.2.2 Moden Eng. Enablement
+10.2.2.2 Integration Management,,Business Enabling,10.2.2 Moden Eng. Enablement
+11.1.1.1 Configure Price & Quote,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.2 Customer Recovery,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.3 Customer Retention and engagement,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.4 Guided Services and Selling,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.5 Lead Management,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.6 Loyalty Management,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.7 Opportunity Management,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.8 Personalized Cross/Up Sell,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.9 Recommendation Management,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.10 Complaint Management,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.11 Journey Management & orchestration,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.12 Language management,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.13 Customer admin support,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.14 Customer Onboarding,,Business Enabling,11.1.1 Customer relationship management
+11.1.1.15 Customer pension and financial education,,Business Enabling,11.1.1 Customer relationship management
+11.3.6.1 Market Forecasting,,Business Enabling,11.3.6 Market Management
+11.3.6.2 Market Segmentation,,Business Enabling,11.3.6 Market Management
+11.3.6.3 Market Target,,Business Enabling,11.3.6 Market Management
+11.4.6.1 Product Added Value,,Business Enabling,11.4.6 Product Portfolio Management
+11.4.8.1 Product/ Service Definition,,Business Enabling,11.4.8 Service Delivery Management
