@@ -1,0 +1,96 @@
+/* ================================================================
+   GOSI BRANDING — Essential Import Utility
+   Color: Rich Blue #00004E (Pantone 655C)
+   
+   OPTION A (recommended): Append these rules to the END of:
+       essential_import_utility/css/essential_import_styles.css
+   
+   OPTION B: Reference as a separate file by adding this line
+       inside essential_header.zul:
+       <?link rel="stylesheet" href="css/gosi_branding.css"?>
+   ================================================================ */
+
+
+/* ── 1. HEADER LOGO ────────────────────────────────────────────── */
+/* Logo is set as a CSS background-image on .headerLogo            */
+/* Place your logo at: essential_import_utility/img/gosi_logo.png  */
+.headerLogo {
+    background-image: url(../img/gosi_logo.png) !important;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: auto 36px;
+    height: 40px;
+}
+
+
+/* ── 2. HEADER ACCENT STRIPE ───────────────────────────────────── */
+/* The coloured stripe at the very top (eas_stripes.png by default) */
+/* Replace with a solid GOSI blue instead of the stripe image       */
+.eas-stripes {
+    background-image: none !important;
+    background-color: #00004E !important;
+    height: 5px;
+}
+
+
+/* ── 3. HEADER DIVIDER LINE ────────────────────────────────────── */
+.header-divider {
+    background-color: #00004E !important;
+    opacity: 0.2;
+}
+
+
+/* ── 4. PRIMARY BUTTONS ────────────────────────────────────────── */
+.btn-primary,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #00004E !important;
+    border-color: #00002E !important;
+    color: #ffffff !important;
+}
+.btn-primary:hover {
+    background-color: #000080 !important;
+    color: #ffffff !important;
+}
+
+
+/* ── 5. SECTION LABELS & HEADINGS ──────────────────────────────── */
+.sectionLabel,
+.text-primary,
+.xxlarge.text-primary {
+    color: #00004E !important;
+}
+
+
+/* ── 6. LINKS ──────────────────────────────────────────────────── */
+.headerRightLinks a {
+    color: #00004E !important;
+}
+.headerRightLinks a:hover {
+    color: #000080 !important;
+}
+
+a {
+    color: #00004E !important;
+}
+a:hover {
+    color: #000080 !important;
+}
+
+
+/* ── 7. ZK TAB ACTIVE STATE ────────────────────────────────────── */
+/* ZK Framework tabs — override the active tab indicator           */
+.z-tab-selected .z-tab-text,
+.z-tab-selected {
+    color: #00004E !important;
+    border-bottom: 3px solid #00004E !important;
+}
+
+
+/* ── 8. TABLE/GRID HEADER ROWS ─────────────────────────────────── */
+.z-listhead .z-listheader,
+.z-grid thead th {
+    background-color: #00004E !important;
+    color: #ffffff !important;
+}

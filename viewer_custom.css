@@ -1,0 +1,83 @@
+/* ================================================================
+   GOSI BRANDING — Essential Viewer
+   Color: Rich Blue #00004E (Pantone 655C)
+   
+   DEPLOY TO: essential_viewer/user/custom.css
+   ================================================================ */
+
+
+/* ── 1. NAVBAR BACKGROUND ──────────────────────────────────────── */
+/* .nav-color is the exact class applied to <nav id="mainHeader">  */
+.nav-color {
+    background-color: #00004E !important;
+}
+
+/* Edit mode navbar (when using the editor) */
+.nav-edit-color {
+    background-color: #00004E !important;
+}
+
+
+/* ── 2. LOGO ───────────────────────────────────────────────────── */
+/* The logo img sits inside .tenant-logo in the navbar             */
+/* Place your logo file at: essential_viewer/user/images/gosi_logo.png */
+.tenant-logo img {
+    content: url('../user/images/gosi_logo.png');
+    height: 96%;
+}
+
+
+/* ── 3. NAV HOVER (dropdown rows) ─────────────────────────────── */
+.nav > li:hover {
+    background-color: #00003A !important;  /* slightly darker blue */
+}
+.nav > li:hover > a {
+    color: #ffffff !important;
+}
+
+
+/* ── 4. LINKS ──────────────────────────────────────────────────── */
+a {
+    color: #00004E !important;
+}
+a:hover {
+    color: #000080 !important;
+}
+
+
+/* ── 5. BUTTONS ────────────────────────────────────────────────── */
+.btn-primary,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #00004E !important;
+    border-color: #00002E !important;
+    color: #ffffff !important;
+}
+.btn-primary:hover {
+    background-color: #000080 !important;
+    color: #ffffff !important;
+}
+
+
+/* ── 6. PAGE SECTION HEADINGS ──────────────────────────────────── */
+.page-header,
+h1, h2, h3 {
+    color: #00004E !important;
+}
+
+
+/* ── 7. TOP ACCENT BAR ─────────────────────────────────────────── */
+/* The thin dark strip above the navbar */
+.app-brand-header {
+    background: #00002E !important;
+}
+
+
+/* ── 8. TAB ACTIVE STATE ───────────────────────────────────────── */
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+    border-top: 3px solid #00004E !important;
+    color: #00004E !important;
+}
