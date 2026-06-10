@@ -1,0 +1,71 @@
+
+3
+Colors & fonts — one file to edit
+essential_viewer/user/custom.css Key file
+This is the official customization file — explicitly documented by Essential Project. It overrides the default theme without touching core files. If the file is empty, add your rules.
+Edit this file
+/* ============================================ YOUR BRANDING — edit values below only ============================================ */
+
+/* 1. Header background color */
+.navbar, .navbar-default, #header, .eas-header {
+  background-color: #003087 !important; /* ← your primary color */
+}
+
+/* 2. Header logo — swap image */
+.navbar-brand img, .eas-logo img, #logo img {
+  content: url('../user/images/your-logo.png');
+  max-height: 40px;
+  width: auto;
+}
+
+/* 3. Navigation link colors */
+.navbar-default .navbar-nav > li > a {
+  color: #ffffff !important; /* ← nav text */
+}
+.navbar-default .navbar-nav > li > a:hover {
+  color: #ccddff !important;
+}
+
+/* 4. Primary accent / buttons */
+.btn-primary, .eas-btn-primary {
+  background-color: #003087 !important;
+  border-color: #002060 !important;
+}
+
+/* 5. Sidebar/panel highlight */
+.eas-sidebar-header, .panel-heading {
+  background-color: #003087 !important;
+  color: #ffffff !important;
+}
+
+/* 6. Page title / header text */
+.eas-page-title, h1.report-title {
+  color: #003087 !important;
+}
+
+/* 7. Optional: change font */
+body, .navbar {
+  font-family: 'Arial', sans-serif !important;
+}
+Replace the #003087 values with your own brand hex colors. Use your browser's DevTools (F12) on a live viewer page to identify exact CSS selectors if these need tweaking for your version.
+4
+App title (browser tab & page title)
+essential_viewer/WEB-INF/web.xml
+Changes the application display name shown in browser tabs and server admin panels.
+Edit this file
+<!-- Find this line: -->
+<display-name>Essential Viewer</display-name>
+
+<!-- Change to: -->
+<display-name>Your Company EA Portal</display-name>
+5
+Repackage & redeploy
+# Go into the extracted folder
+cd /path/to/tomcat/webapps/essential_viewer/
+
+# Repackage as a WAR
+jar -cvf ../essential_viewer_branded.war .
+
+# Restart Tomcat to pick up changes
+./bin/shutdown.sh && ./bin/startup.sh
+Shortcut: If Tomcat is already running with the extracted folder (no WAR needed), you only need to restart Tomcat after editing — no repackaging required.
