@@ -86,17 +86,24 @@ after recording.
 
 ### Parameterizing recorded inputs
 
-The **Stop & review** screen lists every typed/selected field under
-**Recorded inputs**. Check **Make this a variable** on any of them, give it
-a name, and optionally mark it **Sensitive** — the literal value you typed
-is discarded and never sent to the server; only the variable name is saved.
-This isn't specific to any one field or site: use it for a username, an
-order ID, a search term, anything you want to supply differently on each
-run rather than baking in the value you happened to type while recording.
+While recording, clicking into any text field, textarea, or select shows a
+small prompt right on the page asking whether to **Keep value** or **Make
+variable** (with an optional **Sensitive** checkbox to mask it). Choose
+"Make variable" and the literal value you type is never captured or sent
+anywhere — only the variable name is. This isn't specific to any one field
+or site: use it for a username, an order ID, a search term, anything you
+want to supply differently on each run rather than baking in whatever you
+happened to type while recording. The prompt shows once per field per
+recording session and doesn't block typing — ignore it and the field is
+captured normally, as before.
 
-Password fields (`<input type="password">`) are handled automatically —
-their real value is never captured in the first place, so they don't need
-manual parameterizing (see [Security notes](#security-notes)).
+Fields that look like a password (`type="password"`, or an
+autocomplete/name/id hint containing "password") are flagged automatically
+— the prompt tells you it won't record the value, with a one-click "Not a
+password" override if it guessed wrong. If you miss the live prompt
+entirely, the **Stop & review** screen still lists every recorded field
+under **Recorded inputs** as a fallback, with the same **Make this a
+variable** option for anything not already decided.
 
 At run time, the dashboard's Run bar shows one input per variable the
 scenario actually uses (sensitive ones masked), pre-labeled with its name.

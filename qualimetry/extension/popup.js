@@ -119,6 +119,18 @@ function renderInputsSection() {
   inputsList.innerHTML = rows
     .map(({ step, i }) => {
       const label = step.selectorLabel || step.selector || "field";
+
+      // Already decided live, in the page, while recording — its literal
+      // value was never captured, so there's nothing left to parameterize.
+      if (step.variableName) {
+        return `
+          <div class="input-row" data-step-index="${i}">
+            <div class="input-row-label">
+              ${escapeHtml(label)}: recorded as <code>{{${escapeHtml(step.variableName)}}}</code>${step.sensitive ? " (sensitive)" : ""}
+            </div>
+          </div>`;
+      }
+
       const suggested = suggestVariableName(step, usedNames);
       return `
         <div class="input-row" data-step-index="${i}">
@@ -150,7 +162,7 @@ function renderInputsSection() {
 function applyParameterization() {
   inputsList.querySelectorAll(".input-row").forEach((row) => {
     const toggle = row.querySelector(".param-toggle");
-    if (!toggle.checked) return;
+    if (!toggle || !toggle.checked) return; // no toggle = already decided live, nothing to do here
     const name = row.querySelector(".param-name").value.trim();
     if (!name) return;
     const step = currentSteps[Number(row.dataset.stepIndex)];
