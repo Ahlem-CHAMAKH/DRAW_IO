@@ -140,7 +140,7 @@ model:
 | PUT    | `/api/scenarios/:id`                 | Update appId/name/description/baseUrl/steps |
 | DELETE | `/api/scenarios/:id`                 | Delete                                |
 | GET    | `/api/scenarios/:id/spec`            | Generated Playwright spec (text)      |
-| POST   | `/api/scenarios/:id/run`             | Replay (`{ repeat, headed, timeoutMs, stopOnFailure }`) |
+| POST   | `/api/scenarios/:id/run`             | Replay (`{ repeat, headed, timeoutMs, stopOnFailure, secret }`) |
 | GET    | `/api/scenarios/:id/runs`            | Run history                           |
 | GET    | `/api/scenarios/:id/runs/:runId`     | One run's full report                 |
 | POST   | `/api/scenarios/:id/check-selector`  | Selector Playground check (`{ selector, url? }`) |
@@ -165,10 +165,14 @@ See `--help` on any command for options.
 
 - **Password fields are redacted at capture time.** The recorder never
   stores the literal text typed into an `<input type="password">` — it
-  saves an empty value with a `redacted` flag. The generated script reads
-  `process.env.QUALIMETRY_SECRET` instead (also honored by the runner on
-  replay), so a login scenario can still run without the real credential
-  ever touching the database, a scenario file, or a generated script.
+  saves an empty value with a `redacted` flag. If a scenario has a
+  redacted step, the dashboard's Run bar shows a **Secret** field — type
+  the real value there and it's sent with that run request only, never
+  persisted anywhere. Without it, redacted steps fall back to
+  `process.env.QUALIMETRY_SECRET` on the server (useful for unattended/CLI
+  runs), or fill empty (login will fail, as will anything after it —
+  that's expected, not a bug). The generated Playwright script also reads
+  `process.env.QUALIMETRY_SECRET` if you export it separately.
 - The dashboard escapes all scenario-supplied text before rendering it, so
   a scenario name/description containing HTML can't inject into the page.
 

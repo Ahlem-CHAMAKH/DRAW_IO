@@ -404,6 +404,16 @@ code { background: var(--bg-sunken); padding: 1px 5px; border-radius: 4px; font-
   color: var(--text);
 }
 
+.run-bar input[type="password"] {
+  font: inherit;
+  width: 160px;
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+}
+
 .run-status { font-size: 13px; color: var(--text-muted); }
 .run-status.ok { color: var(--ok); }
 .run-status.fail { color: var(--fail); }

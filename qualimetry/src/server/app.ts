@@ -141,13 +141,14 @@ export function createApp() {
     const scenario = getScenario(req.params.id);
     if (!scenario) return res.status(404).json({ error: "Scenario not found" });
 
-    const { repeat, headed, timeoutMs, stopOnFailure } = req.body ?? {};
+    const { repeat, headed, timeoutMs, stopOnFailure, secret } = req.body ?? {};
     try {
       const report = await runScenario(scenario, {
         repeat: typeof repeat === "number" ? repeat : 1,
         headed: !!headed,
         timeoutMs: typeof timeoutMs === "number" ? timeoutMs : undefined,
         stopOnFailure: !!stopOnFailure,
+        secret: typeof secret === "string" ? secret : undefined,
       });
       const run = createRun(scenario.id, report);
       res.status(201).json(run);

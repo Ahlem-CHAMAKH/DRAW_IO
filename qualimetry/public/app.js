@@ -404,6 +404,12 @@ function renderDetail(scenario) {
       <button class="primary" data-action="run">▶ Run</button>
       <label for="repeatInput">Repeat</label>
       <input id="repeatInput" type="number" min="1" value="1" />
+      ${
+        scenario.steps.some((s) => s.redacted)
+          ? `<label for="secretInput">Secret</label>
+             <input id="secretInput" type="password" placeholder="value for redacted field(s)" autocomplete="off" />`
+          : ""
+      }
       <span class="run-status" data-role="run-status"></span>
     </div>
 
@@ -468,7 +474,8 @@ function renderDetail(scenario) {
 
   detailEl.querySelector('[data-action="run"]').addEventListener("click", () => {
     const repeat = Number(detailEl.querySelector("#repeatInput").value) || 1;
-    startRun(scenario, repeat);
+    const secretInput = detailEl.querySelector("#secretInput");
+    startRun(scenario, repeat, secretInput ? secretInput.value : undefined);
   });
 
   // If this scenario's run is still in flight (e.g. the user switched away
@@ -500,13 +507,16 @@ function applyRunningUI(scenarioId, repeat, startedAt) {
   runTickerInterval = setInterval(tick, 1000);
 }
 
-function startRun(scenario, repeat) {
+function startRun(scenario, repeat, secret) {
   if (runningScenarios.has(scenario.id)) return; // already running, ignore duplicate clicks
   const startedAt = Date.now();
   runningScenarios.set(scenario.id, { repeat, startedAt });
   applyRunningUI(scenario.id, repeat, startedAt);
 
-  api(`/scenarios/${scenario.id}/run`, { method: "POST", body: JSON.stringify({ repeat }) })
+  api(`/scenarios/${scenario.id}/run`, {
+    method: "POST",
+    body: JSON.stringify({ repeat, secret: secret || undefined }),
+  })
     .then((run) => {
       runningScenarios.delete(scenario.id);
       showToast(`"${scenario.name}": ${run.passed} passed, ${run.failed} failed.`, run.failed > 0);

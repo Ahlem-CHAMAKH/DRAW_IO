@@ -10,9 +10,11 @@ export interface RunOptions {
   headed?: boolean;
   timeoutMs?: number;
   stopOnFailure?: boolean;
+  /** Value to fill into redacted (e.g. password) steps for this run only — never persisted. Falls back to process.env.QUALIMETRY_SECRET. */
+  secret?: string;
 }
 
-async function executeStep(page: Page, step: ScenarioStep, timeoutMs: number): Promise<void> {
+async function executeStep(page: Page, step: ScenarioStep, timeoutMs: number, secret: string): Promise<void> {
   const locator = step.selector ? page.locator(step.selector) : undefined;
 
   switch (step.type) {
@@ -26,7 +28,7 @@ async function executeStep(page: Page, step: ScenarioStep, timeoutMs: number): P
       await locator!.dblclick({ timeout: timeoutMs });
       return;
     case "fill":
-      await locator!.fill(step.redacted ? process.env.QUALIMETRY_SECRET ?? "" : step.value ?? "", {
+      await locator!.fill(step.redacted ? secret : step.value ?? "", {
         timeout: timeoutMs,
       });
       return;
@@ -65,7 +67,7 @@ async function executeStep(page: Page, step: ScenarioStep, timeoutMs: number): P
 async function runAttempt(
   scenario: Scenario,
   attempt: number,
-  opts: Required<Pick<RunOptions, "headed" | "timeoutMs">>,
+  opts: Required<Pick<RunOptions, "headed" | "timeoutMs">> & { secret: string },
   reportDir: string,
   slug: string
 ): Promise<RunAttemptResult> {
@@ -85,7 +87,7 @@ async function runAttempt(
   for (const step of scenario.steps) {
     const stepStart = Date.now();
     try {
-      await executeStep(page, step, opts.timeoutMs);
+      await executeStep(page, step, opts.timeoutMs, opts.secret);
       stepResults.push({ index: step.index, type: step.type, ok: true, durationMs: Date.now() - stepStart });
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
@@ -138,6 +140,7 @@ export async function runScenario(scenario: Scenario, opts: RunOptions = {}): Pr
   const headed = opts.headed ?? false;
   const timeoutMs = opts.timeoutMs ?? 10_000;
   const stopOnFailure = opts.stopOnFailure ?? false;
+  const secret = opts.secret ?? process.env.QUALIMETRY_SECRET ?? "";
 
   const slug = slugify(scenario.name);
   const screenshotDir = path.join(REPORTS_DIR, slug);
@@ -147,7 +150,7 @@ export async function runScenario(scenario: Scenario, opts: RunOptions = {}): Pr
   const attempts: RunAttemptResult[] = [];
 
   for (let i = 1; i <= repeat; i++) {
-    const result = await runAttempt(scenario, i, { headed, timeoutMs }, screenshotDir, slug);
+    const result = await runAttempt(scenario, i, { headed, timeoutMs, secret }, screenshotDir, slug);
     attempts.push(result);
     console.log(
       `  attempt ${i}/${repeat}: ${result.ok ? "PASS" : "FAIL"} (${result.durationMs}ms)` +
