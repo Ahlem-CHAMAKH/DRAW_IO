@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Qualimetry</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Qualimetry</h1>
+      <nav>
+        <a href="/scenarios.html">Scenarios</a>
+      </nav>
+    </header>
+    <main>
+      <p class="muted">
+        Record browser actions with the extension, generate a Playwright test script, save the
+        scenario here, and replay it as many times as you need.
+      </p>
+
+      <h2>1. Install the extension</h2>
+      <div class="card">
+        <p>
+          <a class="btn primary" href="/api/extension/download">Download qualimetry-extension.zip</a>
+        </p>
+        <ol class="install-steps">
+          <li>Unzip <code>qualimetry-extension.zip</code> somewhere you'll keep it.</li>
+          <li>Open <code>chrome://extensions</code> (or your browser's equivalent).</li>
+          <li>Turn on <strong>Developer mode</strong> (top right).</li>
+          <li>Click <strong>Load unpacked</strong> and select the unzipped <code>qualimetry-extension</code> folder.</li>
+          <li>Pin the Qualimetry icon to your toolbar.</li>
+        </ol>
+      </div>
+
+      <h2>2. Record a scenario</h2>
+      <div class="card">
+        <p class="muted">
+          Open the extension popup on the page you want to test, click <strong>Start recording</strong>,
+          interact with the page normally, then click <strong>Stop &amp; review</strong>, name the
+          scenario, and <strong>Save</strong>. It's saved straight to this server.
+        </p>
+      </div>
+
+      <h2>3. Run it</h2>
+      <div class="card">
+        <p class="muted">
+          Head to the <a href="/scenarios.html">Scenarios</a> page to view saved scenarios, inspect
+          the generated Playwright script, and replay a scenario as many times as you like — each
+          run gets its own pass/fail report.
+        </p>
+      </div>
+    </main>
+  </body>
+</html>

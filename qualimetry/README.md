@@ -1,108 +1,127 @@
 # qualimetry
 
-A small CLI that takes the parts of Cypress and Selenium that matter most for
-day-to-day UI testing and puts them behind one workflow:
+A small web app that takes the parts of Cypress and Selenium that matter most
+for day-to-day UI testing and puts them behind one workflow:
 
-1. **Record** — interact with a real browser; qualimetry captures your clicks,
-   typing, selections, checkboxes, key presses, and navigations.
-2. **Generate** — turns the recording into a readable
+1. **Record** — a browser extension captures your clicks, typing, selections,
+   checkboxes, key presses, and navigations on any site you're already
+   browsing.
+2. **Generate** — every scenario gets a readable
    [`@playwright/test`](https://playwright.dev/docs/writing-tests) spec file
-   (auto-waiting, cross-browser, like Cypress's ergonomics on Selenium's
-   WebDriver-style engine).
-3. **Save** — writes the scenario (as portable JSON) and the generated script
-   into `scenarios/<slug>/`, ready to commit to this git repo.
-4. **Automate** — replays a saved scenario as many times as you want, each run
-   isolated in its own browser context, with a pass/fail report and a
-   screenshot on failure.
+   (auto-waiting, cross-browser).
+3. **Save** — the scenario is POSTed straight to the qualimetry server and
+   persisted in a SQLite database.
+4. **Automate** — replay a saved scenario from the web dashboard as many
+   times as you want; each run is isolated in its own browser context, with
+   a pass/fail report per attempt.
 
-## Install
+There's also a CLI (`src/cli.ts`) for recording/running scenarios as local
+files without the extension or server — see [CLI usage](#cli-alternative-no-server)
+below.
+
+## Architecture
+
+```
+extension/     Chrome (MV3) extension — records page interactions, saves to the server
+src/server/    Express API + SQLite (via node:sqlite) — scenarios, runs, extension zip
+public/        Static web dashboard (install page + scenario list/run UI)
+src/           Shared core: types, script generator, Playwright runner, CLI
+data/          qualimetry.db (gitignored, created on first server run)
+```
+
+## Install & run the server
 
 ```bash
 cd qualimetry
 npm install         # also runs `playwright install chromium` via postinstall
 npm run build
+npm run server       # http://localhost:4300
 ```
 
-If `playwright install chromium` can't reach the network in your environment,
-run it manually later on a machine with normal internet access:
-`npx playwright install chromium`.
+If your npm blocks lifecycle scripts (you'll see an `allow-scripts` warning),
+run `npm approve-scripts --allow-scripts-pending` first, then re-run
+`npm install`. If `playwright install chromium` still can't reach the
+network, run `npx playwright install chromium` manually afterwards —
+required for the **run** step (headless replay), not for recording or saving
+scenarios.
 
-## Usage
+The server uses Node's built-in `node:sqlite` module, which is experimental
+in Node 22 and needs the `--experimental-sqlite` flag — already wired into
+the `server` and `dev:server` npm scripts, so you don't need to pass it
+yourself. Requires Node ≥ 22.5.
 
-Run via `npm run dev -- <command>` during development, or `node dist/cli.js
-<command>` / `npx qualimetry <command>` after `npm run build`.
+Once running, open **http://localhost:4300** for install instructions and
+**http://localhost:4300/scenarios.html** for the dashboard.
 
-### Record a scenario
+## Install the extension
+
+1. Visit http://localhost:4300 and click **Download qualimetry-extension.zip**
+   (or just point "Load unpacked" at the `extension/` folder directly if
+   you're running from a checkout).
+2. Unzip it.
+3. Open `chrome://extensions`, enable **Developer mode**.
+4. Click **Load unpacked**, select the unzipped `qualimetry-extension` folder.
+5. Pin the extension to your toolbar.
+
+## Record a scenario
+
+Open the extension popup on the page you want to test:
+
+- **Start recording** — captures clicks, typed values, selects, checkboxes,
+  Enter/Escape/Tab key presses, and page navigations.
+- **Stop & review** — freezes the capture; give it a name (and optional
+  description) and **Save**. It's saved to whichever server URL is set in
+  the popup (defaults to `http://localhost:4300`).
+
+Assertions aren't auto-recorded — there's no reliable DOM signal for "the
+user meant to check this." Add `assertText`, `assertVisible`, or `assertUrl`
+steps by hand via `PUT /api/scenarios/:id` (or the CLI's local-file flow)
+after recording.
+
+## Run scenarios
+
+On the **Scenarios** dashboard: view captured steps, view the generated
+Playwright script, set a repeat count, and click **Run**. Each run launches
+a real (headless) Chromium browser, replays the scenario the requested
+number of times — one isolated browser context per attempt — and stores a
+pass/fail report you can revisit under **Run history**.
+
+## API
+
+| Method | Path                             | Purpose                              |
+| ------ | -------------------------------- | ------------------------------------- |
+| GET    | `/api/scenarios`                 | List scenarios                        |
+| POST   | `/api/scenarios`                 | Create a scenario (used by extension) |
+| GET    | `/api/scenarios/:id`             | Get one (by id or slug)               |
+| PUT    | `/api/scenarios/:id`             | Update name/description/baseUrl/steps |
+| DELETE | `/api/scenarios/:id`             | Delete                                |
+| GET    | `/api/scenarios/:id/spec`        | Generated Playwright spec (text)      |
+| POST   | `/api/scenarios/:id/run`         | Replay (`{ repeat, headed, timeoutMs, stopOnFailure }`) |
+| GET    | `/api/scenarios/:id/runs`        | Run history                           |
+| GET    | `/api/scenarios/:id/runs/:runId` | One run's full report                 |
+| GET    | `/api/extension/download`        | Zipped extension folder               |
+
+## CLI (alternative, no server)
+
+For local-only use without the extension/server/DB, the original CLI still
+works against files under `scenarios/`:
 
 ```bash
-qualimetry record "login flow" https://example.com/login
+node dist/cli.js record "my flow" https://example.com   # interactive, needs a display
+node dist/cli.js list
+node dist/cli.js run "my flow" --repeat 20
+node dist/cli.js generate "my flow"
 ```
 
-Opens a real (headed) Chromium window at the given URL. Interact with the
-page normally — click, type, select, check boxes, navigate. Close the browser
-window when you're done; qualimetry saves the scenario automatically to
-`scenarios/login-flow/`:
-
-- `scenario.json` — the portable, hand-editable step list
-- `login-flow.spec.ts` — a generated Playwright test you can also run with
-  `npx playwright test`
-
-Options: `-d, --description <text>`, `--commit` (git-commit the saved files),
-`-m, --message <msg>`.
-
-Recording needs a visible browser window, so it must be run on a machine with
-a display (your laptop/dev box), not in a headless CI or server container.
-
-### Assertions
-
-The recorder captures interactions, not assertions — there's no reliable DOM
-signal for "the user meant to check this." Add `assertText`, `assertVisible`,
-or `assertUrl` steps by hand to `scenario.json` after recording, then run
-`qualimetry generate <name>` to fold them into the generated spec.
-
-### List saved scenarios
-
-```bash
-qualimetry list
-```
-
-### Automate / repeat a scenario
-
-```bash
-qualimetry run "login flow" --repeat 20 --headed
-```
-
-Replays the scenario the requested number of times (default 1), each attempt
-in a fresh browser context. Prints a pass/fail line per attempt and writes a
-JSON report plus a failure screenshot (when applicable) to
-`reports/<slug>/`.
-
-Options: `-r, --repeat <n>`, `--headed`, `-t, --timeout <ms>` (per-step
-timeout, default 10000), `--stop-on-failure`.
-
-### Regenerate a script after editing scenario.json
-
-```bash
-qualimetry generate "login flow"
-```
-
-## Project layout
-
-```
-qualimetry/
-  src/            CLI + recorder + generator + runner source (TypeScript)
-  scenarios/      saved scenarios: scenario.json + generated *.spec.ts
-  reports/        JSON run reports + failure screenshots (gitignored)
-```
+See `--help` on any command for options.
 
 ## Design notes
 
 - **Engine**: [Playwright](https://playwright.dev/), for Cypress-style
-  auto-waiting locators plus Selenium-style multi-browser WebDriver-grade
-  automation, without needing two separate engines.
+  auto-waiting locators plus Selenium-style multi-browser automation.
 - **Selectors**: prefers `id`, then `data-testid`/`data-test`/`data-cy`/`data-qa`,
-  then `name`, then falls back to a short structural CSS path — robust
-  enough for typical apps without requiring instrumentation, but you can
-  always hand-edit `scenario.json` if a selector is fragile.
+  then `name`, then a short structural CSS path.
 - **Isolation**: every replay attempt gets its own browser context (matching
-  Cypress's per-test isolation model), so repeated runs don't leak state.
+  Cypress's per-test isolation model).
+- **No auth yet**: the server is single-tenant with permissive CORS, meant
+  for local/trusted-network use. Add auth before exposing it publicly.
