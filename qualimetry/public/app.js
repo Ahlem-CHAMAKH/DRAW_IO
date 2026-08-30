@@ -38,6 +38,29 @@ function clearRunTicker() {
   }
 }
 
+// Mirrors stepVariable() in src/types.ts — kept in sync by hand since this
+// file has no build step. Folds the legacy `redacted` flag (password-only)
+// into the same shape as a named `variableName`.
+function stepVariable(step) {
+  if (step.variableName) return { name: step.variableName, sensitive: !!step.sensitive };
+  if (step.redacted) return { name: "password", sensitive: true };
+  return null;
+}
+
+// Unique variables referenced anywhere in the scenario, in first-seen order.
+function scenarioVariables(scenario) {
+  const seen = new Set();
+  const vars = [];
+  for (const step of scenario.steps) {
+    const v = stepVariable(step);
+    if (v && !seen.has(v.name)) {
+      seen.add(v.name);
+      vars.push(v);
+    }
+  }
+  return vars;
+}
+
 const STEP_META = {
   goto: { badge: "GO", group: "nav", verb: "Go to" },
   click: { badge: "CL", group: "action", verb: "Click" },
@@ -214,9 +237,10 @@ function renderSidebar() {
 function stepRow(step, arrayIndex) {
   const meta = STEP_META[step.type] || { badge: "?", group: "action", verb: step.type };
   const targetText = step.selectorLabel || step.selector || "";
+  const variable = stepVariable(step);
   let valueHtml = "";
-  if (step.redacted) {
-    valueHtml = `<span class="step-value redacted">redacted</span>`;
+  if (variable) {
+    valueHtml = `<span class="step-value variable">{{${esc(variable.name)}}}${variable.sensitive ? " (masked)" : ""}</span>`;
   } else if (step.value) {
     valueHtml = `<span class="step-value">"${esc(step.value)}"</span>`;
   }
@@ -404,6 +428,20 @@ function renderDetail(scenario) {
       <button class="primary" data-action="run">▶ Run</button>
       <label for="repeatInput">Repeat</label>
       <input id="repeatInput" type="number" min="1" value="1" />
+      ${scenarioVariables(scenario)
+        .map(
+          (v) => `
+        <label for="var-${esc(v.name)}">${esc(v.name)}</label>
+        <input
+          id="var-${esc(v.name)}"
+          class="run-var-input"
+          data-var-name="${esc(v.name)}"
+          type="${v.sensitive ? "password" : "text"}"
+          placeholder="value for {{${esc(v.name)}}}"
+          autocomplete="off"
+        />`
+        )
+        .join("")}
       <span class="run-status" data-role="run-status"></span>
     </div>
 
@@ -468,7 +506,11 @@ function renderDetail(scenario) {
 
   detailEl.querySelector('[data-action="run"]').addEventListener("click", () => {
     const repeat = Number(detailEl.querySelector("#repeatInput").value) || 1;
-    startRun(scenario, repeat);
+    const variables = {};
+    detailEl.querySelectorAll(".run-var-input").forEach((input) => {
+      if (input.value) variables[input.dataset.varName] = input.value;
+    });
+    startRun(scenario, repeat, variables);
   });
 
   // If this scenario's run is still in flight (e.g. the user switched away
@@ -500,13 +542,16 @@ function applyRunningUI(scenarioId, repeat, startedAt) {
   runTickerInterval = setInterval(tick, 1000);
 }
 
-function startRun(scenario, repeat) {
+function startRun(scenario, repeat, variables) {
   if (runningScenarios.has(scenario.id)) return; // already running, ignore duplicate clicks
   const startedAt = Date.now();
   runningScenarios.set(scenario.id, { repeat, startedAt });
   applyRunningUI(scenario.id, repeat, startedAt);
 
-  api(`/scenarios/${scenario.id}/run`, { method: "POST", body: JSON.stringify({ repeat }) })
+  api(`/scenarios/${scenario.id}/run`, {
+    method: "POST",
+    body: JSON.stringify({ repeat, variables }),
+  })
     .then((run) => {
       runningScenarios.delete(scenario.id);
       showToast(`"${scenario.name}": ${run.passed} passed, ${run.failed} failed.`, run.failed > 0);

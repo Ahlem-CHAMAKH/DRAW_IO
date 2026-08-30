@@ -2,7 +2,7 @@ import path from "node:path";
 import os from "node:os";
 import fs from "node:fs/promises";
 import { chromium, expect, type Page } from "@playwright/test";
-import type { RunAttemptResult, RunReport, Scenario, ScenarioStep, StepResult } from "./types.js";
+import { envVarNameFor, stepVariable, type RunAttemptResult, type RunReport, type Scenario, type ScenarioStep, type StepResult } from "./types.js";
 import { REPORTS_DIR, slugify } from "./scenario-store.js";
 
 export interface RunOptions {
@@ -10,9 +10,23 @@ export interface RunOptions {
   headed?: boolean;
   timeoutMs?: number;
   stopOnFailure?: boolean;
+  /** Values for this run's variablized steps (by variable name), for this run only — never persisted. Falls back to process.env.QUALIMETRY_VAR_<NAME> per variable. */
+  variables?: Record<string, string>;
 }
 
-async function executeStep(page: Page, step: ScenarioStep, timeoutMs: number): Promise<void> {
+/** Resolves a fill/select step's actual value: the run's supplied variable, then the matching env var, then "". */
+function resolveValue(step: ScenarioStep, variables: Record<string, string>): string {
+  const variable = stepVariable(step);
+  if (!variable) return step.value ?? "";
+  return variables[variable.name] ?? process.env[envVarNameFor(variable.name)] ?? "";
+}
+
+async function executeStep(
+  page: Page,
+  step: ScenarioStep,
+  timeoutMs: number,
+  variables: Record<string, string>
+): Promise<void> {
   const locator = step.selector ? page.locator(step.selector) : undefined;
 
   switch (step.type) {
@@ -26,9 +40,7 @@ async function executeStep(page: Page, step: ScenarioStep, timeoutMs: number): P
       await locator!.dblclick({ timeout: timeoutMs });
       return;
     case "fill":
-      await locator!.fill(step.redacted ? process.env.QUALIMETRY_SECRET ?? "" : step.value ?? "", {
-        timeout: timeoutMs,
-      });
+      await locator!.fill(resolveValue(step, variables), { timeout: timeoutMs });
       return;
     case "check":
       await locator!.check({ timeout: timeoutMs });
@@ -37,7 +49,7 @@ async function executeStep(page: Page, step: ScenarioStep, timeoutMs: number): P
       await locator!.uncheck({ timeout: timeoutMs });
       return;
     case "select":
-      await locator!.selectOption(step.value ?? "", { timeout: timeoutMs });
+      await locator!.selectOption(resolveValue(step, variables), { timeout: timeoutMs });
       return;
     case "press":
       if (locator) await locator.press(step.value ?? "Enter", { timeout: timeoutMs });
@@ -65,7 +77,7 @@ async function executeStep(page: Page, step: ScenarioStep, timeoutMs: number): P
 async function runAttempt(
   scenario: Scenario,
   attempt: number,
-  opts: Required<Pick<RunOptions, "headed" | "timeoutMs">>,
+  opts: Required<Pick<RunOptions, "headed" | "timeoutMs">> & { variables: Record<string, string> },
   reportDir: string,
   slug: string
 ): Promise<RunAttemptResult> {
@@ -85,7 +97,7 @@ async function runAttempt(
   for (const step of scenario.steps) {
     const stepStart = Date.now();
     try {
-      await executeStep(page, step, opts.timeoutMs);
+      await executeStep(page, step, opts.timeoutMs, opts.variables);
       stepResults.push({ index: step.index, type: step.type, ok: true, durationMs: Date.now() - stepStart });
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
@@ -138,6 +150,7 @@ export async function runScenario(scenario: Scenario, opts: RunOptions = {}): Pr
   const headed = opts.headed ?? false;
   const timeoutMs = opts.timeoutMs ?? 10_000;
   const stopOnFailure = opts.stopOnFailure ?? false;
+  const variables = opts.variables ?? {};
 
   const slug = slugify(scenario.name);
   const screenshotDir = path.join(REPORTS_DIR, slug);
@@ -147,7 +160,7 @@ export async function runScenario(scenario: Scenario, opts: RunOptions = {}): Pr
   const attempts: RunAttemptResult[] = [];
 
   for (let i = 1; i <= repeat; i++) {
-    const result = await runAttempt(scenario, i, { headed, timeoutMs }, screenshotDir, slug);
+    const result = await runAttempt(scenario, i, { headed, timeoutMs, variables }, screenshotDir, slug);
     attempts.push(result);
     console.log(
       `  attempt ${i}/${repeat}: ${result.ok ? "PASS" : "FAIL"} (${result.durationMs}ms)` +

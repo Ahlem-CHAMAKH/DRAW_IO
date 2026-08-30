@@ -1,7 +1,18 @@
-import type { Scenario, ScenarioStep } from "./types.js";
+import { envVarNameFor, stepVariable, type Scenario, type ScenarioStep } from "./types.js";
 
 function jsStr(v: string | undefined): string {
   return JSON.stringify(v ?? "");
+}
+
+/** For fill/select: either the literal captured value, or a reference to a runtime variable's env var. */
+function valueExpr(step: ScenarioStep): { expr: string; note?: string } {
+  const variable = stepVariable(step);
+  if (!variable) return { expr: jsStr(step.value) };
+  const envVar = envVarNameFor(variable.name);
+  return {
+    expr: `process.env.${envVar} ?? ""`,
+    note: `⚠ "${variable.name}" — value not recorded; set ${envVar}`,
+  };
 }
 
 function stepToLine(step: ScenarioStep): string {
@@ -15,20 +26,18 @@ function stepToLine(step: ScenarioStep): string {
       return `  await page.locator(${sel}).click();${comment}`;
     case "dblclick":
       return `  await page.locator(${sel}).dblclick();${comment}`;
-    case "fill":
-      if (step.redacted) {
-        return (
-          `  await page.locator(${sel}).fill(process.env.QUALIMETRY_SECRET ?? "");` +
-          `  // ⚠ ${step.selectorLabel ?? "sensitive field"} — value was not recorded; set QUALIMETRY_SECRET`
-        );
-      }
-      return `  await page.locator(${sel}).fill(${jsStr(step.value)});${comment}`;
+    case "fill": {
+      const { expr, note } = valueExpr(step);
+      return `  await page.locator(${sel}).fill(${expr});${note ? `  // ${note}` : comment}`;
+    }
     case "check":
       return `  await page.locator(${sel}).check();${comment}`;
     case "uncheck":
       return `  await page.locator(${sel}).uncheck();${comment}`;
-    case "select":
-      return `  await page.locator(${sel}).selectOption(${jsStr(step.value)});${comment}`;
+    case "select": {
+      const { expr, note } = valueExpr(step);
+      return `  await page.locator(${sel}).selectOption(${expr});${note ? `  // ${note}` : comment}`;
+    }
     case "press":
       return sel
         ? `  await page.locator(${sel}).press(${jsStr(step.value)});${comment}`
