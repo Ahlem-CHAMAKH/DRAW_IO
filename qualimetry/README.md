@@ -102,25 +102,50 @@ replays the scenario the requested number of times — one isolated browser
 context per attempt — and stores a pass/fail report you can revisit under
 **Run history**.
 
+## Debugging a failing scenario
+
+When a run fails, the dashboard gives you several ways to find out why —
+similar to what Cypress's test runner shows, adapted to a headless-replay
+model:
+
+- **Run history detail**: expand a run, then an attempt, to see which step
+  failed and the exact error (including the Playwright locator call log).
+- **Failure screenshot**: the page state at the moment the failing step
+  timed out, shown inline.
+- **Video**: every attempt (pass or fail) is recorded and playable inline —
+  the closest equivalent to Cypress's automatic run videos.
+- **Remove a bad step**: hover a step in the **Steps** tab and click **×** to
+  cut it out (e.g. a step that only makes sense after a validation error
+  that isn't present on a clean replay) without re-recording.
+- **Selector Playground**: hover a step with a selector and click **Test**
+  to check, against a fresh page load, whether that selector currently
+  matches anything and whether it's visible — useful for spotting a
+  fragile or conditionally-rendered selector before it fails mid-run. It
+  loads the nearest preceding `goto` URL (or the scenario's `baseUrl`)
+  fresh — it does **not** replay earlier steps, so it can't reproduce state
+  that only exists mid-scenario (e.g. post-login).
+
 ## API
 
-| Method | Path                             | Purpose                              |
-| ------ | -------------------------------- | ------------------------------------- |
-| GET    | `/api/apps`                      | List workspaces (with scenario counts) |
-| POST   | `/api/apps`                      | Create a workspace (`{ name, description? }`) |
-| GET    | `/api/apps/:id`                  | Get one (by id or slug)               |
-| PUT    | `/api/apps/:id`                  | Rename/update                         |
-| DELETE | `/api/apps/:id`                  | Delete (cascades to its scenarios + runs) |
-| GET    | `/api/scenarios`                 | List scenarios (optionally `?appId=`) |
-| POST   | `/api/scenarios`                 | Create a scenario; needs `appId` **or** `appName` (used by extension — resolves-or-creates the workspace) |
-| GET    | `/api/scenarios/:id`             | Get one (by id or slug)               |
-| PUT    | `/api/scenarios/:id`             | Update appId/name/description/baseUrl/steps |
-| DELETE | `/api/scenarios/:id`             | Delete                                |
-| GET    | `/api/scenarios/:id/spec`        | Generated Playwright spec (text)      |
-| POST   | `/api/scenarios/:id/run`         | Replay (`{ repeat, headed, timeoutMs, stopOnFailure }`) |
-| GET    | `/api/scenarios/:id/runs`        | Run history                           |
-| GET    | `/api/scenarios/:id/runs/:runId` | One run's full report                 |
-| GET    | `/api/extension/download`        | Zipped extension folder               |
+| Method | Path                                | Purpose                              |
+| ------ | ------------------------------------ | ------------------------------------- |
+| GET    | `/api/apps`                          | List workspaces (with scenario counts) |
+| POST   | `/api/apps`                          | Create a workspace (`{ name, description? }`) |
+| GET    | `/api/apps/:id`                      | Get one (by id or slug)               |
+| PUT    | `/api/apps/:id`                      | Rename/update                         |
+| DELETE | `/api/apps/:id`                      | Delete (cascades to its scenarios + runs) |
+| GET    | `/api/scenarios`                     | List scenarios (optionally `?appId=`) |
+| POST   | `/api/scenarios`                     | Create a scenario; needs `appId` **or** `appName` (used by extension — resolves-or-creates the workspace) |
+| GET    | `/api/scenarios/:id`                 | Get one (by id or slug)               |
+| PUT    | `/api/scenarios/:id`                 | Update appId/name/description/baseUrl/steps |
+| DELETE | `/api/scenarios/:id`                 | Delete                                |
+| GET    | `/api/scenarios/:id/spec`            | Generated Playwright spec (text)      |
+| POST   | `/api/scenarios/:id/run`             | Replay (`{ repeat, headed, timeoutMs, stopOnFailure }`) |
+| GET    | `/api/scenarios/:id/runs`            | Run history                           |
+| GET    | `/api/scenarios/:id/runs/:runId`     | One run's full report                 |
+| POST   | `/api/scenarios/:id/check-selector`  | Selector Playground check (`{ selector, url? }`) |
+| GET    | `/api/extension/download`            | Zipped extension folder               |
+| GET    | `/reports/*`                         | Static: failure screenshots + attempt videos |
 
 ## CLI (alternative, no server)
 
@@ -157,7 +182,13 @@ See `--help` on any command for options.
   Cypress's per-test isolation model).
 - **No auth yet**: the server is single-tenant with permissive CORS, meant
   for local/trusted-network use. Add auth before exposing it publicly.
-- **Branding**: uses GOSI's Rich Blue (`#00004E`, Pantone 655C), matching
-  the color already used in GOSI's other internal tools. The header shows a
-  "G" monogram until a real logo is added — drop a file at
+- **Branding**: styled after GOSI's `workspace` product (violet/indigo
+  gradient header, green accent, pill controls, Cairo typeface) rather than
+  GOSI's older Essential Viewer tools — colors are approximated from a
+  screenshot, not exact design tokens; swap the CSS variables at the top of
+  `public/style.css` if you have the real values. The header shows a "G"
+  monogram until a real logo is added — drop a file at
   `public/gosi-logo.png` and it's picked up automatically (see `public/brand.js`).
+- **Disk usage**: a video is recorded for every attempt (like Cypress
+  records every run), saved under `reports/<scenario-slug>/`. `reports/` is
+  gitignored; clean it out periodically if you run scenarios a lot.

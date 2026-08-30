@@ -19,7 +19,8 @@ import {
   updateScenario,
 } from "./repository.js";
 import { generateSpec } from "../generate.js";
-import { runScenario } from "../runner.js";
+import { checkSelector, runScenario } from "../runner.js";
+import { REPORTS_DIR } from "../scenario-store.js";
 import type { ScenarioStep } from "../types.js";
 
 const PROJECT_ROOT = path.resolve(fileURLToPath(new URL("../..", import.meta.url)));
@@ -155,6 +156,24 @@ export function createApp() {
     }
   });
 
+  app.post("/api/scenarios/:id/check-selector", async (req: Request, res: Response) => {
+    const scenario = getScenario(req.params.id);
+    if (!scenario) return res.status(404).json({ error: "Scenario not found" });
+
+    const { selector, url } = req.body ?? {};
+    if (typeof selector !== "string" || !selector.trim()) {
+      return res.status(400).json({ error: "`selector` is required" });
+    }
+    const targetUrl = typeof url === "string" && url.trim() ? url : scenario.baseUrl;
+
+    try {
+      const result = await checkSelector(targetUrl, selector);
+      res.json(result);
+    } catch (err) {
+      res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    }
+  });
+
   app.get("/api/scenarios/:id/runs", (req: Request, res: Response) => {
     const scenario = getScenario(req.params.id);
     if (!scenario) return res.status(404).json({ error: "Scenario not found" });
@@ -177,6 +196,10 @@ export function createApp() {
     archive.directory(EXTENSION_DIR, "qualimetry-extension");
     archive.finalize();
   });
+
+  // Failure screenshots and per-attempt videos, served under paths relative
+  // to REPORTS_DIR (e.g. /reports/my-scenario/attempt-1.webm).
+  app.use("/reports", express.static(REPORTS_DIR));
 
   app.use(express.static(PUBLIC_DIR));
 

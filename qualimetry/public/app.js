@@ -221,6 +221,9 @@ function stepRow(step, arrayIndex) {
     valueHtml = `<span class="step-value">"${esc(step.value)}"</span>`;
   }
   const urlHtml = step.url ? `<span class="step-url">${esc(step.url)}</span>` : "";
+  const testBtn = step.selector
+    ? `<button class="ghost step-test" data-test-selector="${arrayIndex}" title="Check whether this selector matches anything on the page right now">Test</button>`
+    : "";
 
   return `
     <li class="step-item">
@@ -229,7 +232,9 @@ function stepRow(step, arrayIndex) {
         ${esc(meta.verb)}${targetText ? ` <span class="step-target">${esc(targetText)}</span>` : ""}
         ${valueHtml ? " " + valueHtml : ""}
         ${urlHtml}
+        <div class="selector-check-result" hidden></div>
       </span>
+      ${testBtn}
       <button class="ghost icon-btn step-remove" data-remove-step="${arrayIndex}" title="Remove this step">&times;</button>
     </li>`;
 }
@@ -248,6 +253,52 @@ async function removeStep(scenario, arrayIndex) {
     showToast("Step removed.");
   } catch (err) {
     showToast(`Couldn't remove step: ${err.message}`, true);
+  }
+}
+
+// Selector Playground: checks a step's selector against a fresh page load
+// (not a full scenario replay, so it can't see state that only exists
+// mid-scenario — e.g. after a login). Uses the nearest preceding `goto`
+// step's URL, or the scenario's baseUrl if there isn't one.
+async function testSelector(scenario, arrayIndex, btn) {
+  const step = scenario.steps[arrayIndex];
+  if (!step || !step.selector) return;
+
+  let url = scenario.baseUrl;
+  for (let i = arrayIndex; i >= 0; i--) {
+    if (scenario.steps[i].type === "goto" && scenario.steps[i].url) {
+      url = scenario.steps[i].url;
+      break;
+    }
+  }
+
+  const li = btn.closest(".step-item");
+  const resultEl = li.querySelector(".selector-check-result");
+  resultEl.hidden = false;
+  resultEl.className = "selector-check-result";
+  resultEl.textContent = `Checking against ${url}…`;
+  btn.disabled = true;
+
+  try {
+    const result = await api(`/scenarios/${scenario.id}/check-selector`, {
+      method: "POST",
+      body: JSON.stringify({ selector: step.selector, url }),
+    });
+    if (result.count === 0) {
+      resultEl.className = "selector-check-result fail";
+      resultEl.textContent = `No match on ${url}.`;
+    } else if (result.count === 1) {
+      resultEl.className = `selector-check-result ${result.visible ? "ok" : "warn"}`;
+      resultEl.textContent = `1 match, ${result.visible ? "visible" : "present but not visible"}.`;
+    } else {
+      resultEl.className = "selector-check-result warn";
+      resultEl.textContent = `${result.count} matches (ambiguous selector) on ${url}.`;
+    }
+  } catch (err) {
+    resultEl.className = "selector-check-result fail";
+    resultEl.textContent = `Couldn't check: ${err.message}`;
+  } finally {
+    btn.disabled = false;
   }
 }
 
@@ -277,6 +328,15 @@ function stepLogRow(step) {
 }
 
 function renderAttempt(attempt) {
+  const screenshotHtml = attempt.screenshotPath
+    ? `<a class="attempt-media-link" href="/reports/${attempt.screenshotPath}" target="_blank" rel="noopener">
+         <img class="attempt-screenshot" src="/reports/${attempt.screenshotPath}" alt="Screenshot at failure" loading="lazy" />
+       </a>`
+    : "";
+  const videoHtml = attempt.videoPath
+    ? `<video class="attempt-video" src="/reports/${attempt.videoPath}" controls preload="metadata"></video>`
+    : "";
+
   return `
     <div class="attempt-row">
       <button class="attempt-summary ${attempt.ok ? "ok" : "fail"}" data-toggle-attempt>
@@ -285,7 +345,9 @@ function renderAttempt(attempt) {
       </button>
       <div class="attempt-detail" hidden>
         ${attempt.error ? `<p class="attempt-error">${esc(attempt.error)}</p>` : ""}
+        ${screenshotHtml}
         <ul class="step-log">${attempt.steps.map(stepLogRow).join("")}</ul>
+        ${videoHtml ? `<div class="attempt-media"><p class="muted">Recording</p>${videoHtml}</div>` : ""}
       </div>
     </div>`;
 }
@@ -398,6 +460,10 @@ function renderDetail(scenario) {
 
   detailEl.querySelectorAll("[data-remove-step]").forEach((btn) => {
     btn.addEventListener("click", () => removeStep(scenario, Number(btn.dataset.removeStep)));
+  });
+
+  detailEl.querySelectorAll("[data-test-selector]").forEach((btn) => {
+    btn.addEventListener("click", () => testSelector(scenario, Number(btn.dataset.testSelector), btn));
   });
 
   detailEl.querySelector('[data-action="run"]').addEventListener("click", () => {

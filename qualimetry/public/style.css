@@ -1,61 +1,63 @@
 :root {
   color-scheme: light;
-  /* GOSI brand — Rich Blue, Pantone 655C. Fixed across both themes, like
-     GOSI's other internal tools (Essential Viewer / Import Utility). */
-  --brand: #00004e;
-  --brand-hover: #00003a;
+  /* GOSI "workspace" family branding: violet/indigo gradient header, vivid
+     green accent, pill controls, rounded cards. Approximated from a
+     screenshot of that product — swap for exact tokens if you have them. */
+  --brand-start: #241c4e;
+  --brand-end: #3c2f7a;
   --brand-contrast: #ffffff;
 
-  --bg: #f5f6f8;
+  --bg: #f6f5fb;
   --bg-elevated: #ffffff;
-  --bg-sunken: #eef0f3;
-  --sidebar-bg: #eef0fa;
-  --border: #e3e5ea;
-  --text: #16181d;
-  --text-muted: #6b7080;
-  --text-faint: #9498a3;
-  --accent: #00004e;
-  --accent-hover: #1a1a68;
+  --bg-sunken: #efeef8;
+  --sidebar-bg: #efedfa;
+  --border: #e4e1f2;
+  --text: #17151f;
+  --text-muted: #6b6b80;
+  --text-faint: #9a99ac;
+  --accent: #22c55e;
+  --accent-hover: #16a34a;
   --accent-contrast: #ffffff;
-  --accent-soft: #e6e6f4;
-  --ok: #157347;
+  --accent-soft: #e2f9ea;
+  --ok: #15803d;
   --ok-bg: #e3f6ea;
   --fail: #c22a2a;
   --fail-bg: #fdecec;
-  --nav-color: #00004e;
-  --nav-bg: #e6e6f4;
+  --nav-color: #4c3fa0;
+  --nav-bg: #efecfa;
   --action-color: #8236d9;
   --action-bg: #f4ecfd;
   --input-color: #0f8a7a;
   --input-bg: #e2f7f3;
   --assert-color: #b3760a;
   --assert-bg: #fdf2df;
-  --shadow: 0 1px 2px rgba(16, 20, 30, 0.04), 0 8px 24px -12px rgba(16, 20, 30, 0.12);
-  --radius: 10px;
-  --radius-sm: 6px;
+  --shadow: 0 1px 2px rgba(30, 20, 60, 0.05), 0 10px 28px -14px rgba(30, 20, 60, 0.18);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-pill: 999px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --bg: #101216;
-    --bg-elevated: #181b21;
-    --bg-sunken: #0c0e12;
-    --sidebar-bg: #0a0c1e;
-    --border: #2a2e37;
-    --text: #eceef2;
-    --text-muted: #9298a8;
-    --text-faint: #6c7180;
-    --accent: #7c8cf0;
-    --accent-hover: #97a4f4;
+    --bg: #121022;
+    --bg-elevated: #1a1830;
+    --bg-sunken: #0e0c1c;
+    --sidebar-bg: #0e0c20;
+    --border: #2e2a48;
+    --text: #ede9f7;
+    --text-muted: #9d9ab4;
+    --text-faint: #6f6c8a;
+    --accent: #34d399;
+    --accent-hover: #5eebb2;
     --accent-contrast: #0b0e14;
-    --accent-soft: #1d2050;
+    --accent-soft: #123527;
     --ok: #4ade80;
     --ok-bg: #113322;
     --fail: #f87171;
     --fail-bg: #3a1616;
-    --nav-color: #97a4f4;
-    --nav-bg: #1d2050;
+    --nav-color: #a99cf5;
+    --nav-bg: #241f47;
     --action-color: #c39bf5;
     --action-bg: #2a1f42;
     --input-color: #4fd6bd;
@@ -67,24 +69,24 @@
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #101216;
-  --bg-elevated: #181b21;
-  --bg-sunken: #0c0e12;
-  --sidebar-bg: #0a0c1e;
-  --border: #2a2e37;
-  --text: #eceef2;
-  --text-muted: #9298a8;
-  --text-faint: #6c7180;
-  --accent: #7c8cf0;
-  --accent-hover: #97a4f4;
+  --bg: #121022;
+  --bg-elevated: #1a1830;
+  --bg-sunken: #0e0c1c;
+  --sidebar-bg: #0e0c20;
+  --border: #2e2a48;
+  --text: #ede9f7;
+  --text-muted: #9d9ab4;
+  --text-faint: #6f6c8a;
+  --accent: #34d399;
+  --accent-hover: #5eebb2;
   --accent-contrast: #0b0e14;
-  --accent-soft: #1d2050;
+  --accent-soft: #123527;
   --ok: #4ade80;
   --ok-bg: #113322;
   --fail: #f87171;
   --fail-bg: #3a1616;
-  --nav-color: #97a4f4;
-  --nav-bg: #1d2050;
+  --nav-color: #a99cf5;
+  --nav-bg: #241f47;
   --action-color: #c39bf5;
   --action-bg: #2a1f42;
   --input-color: #4fd6bd;
@@ -102,7 +104,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font: 14px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif;
+  font: 14px/1.5 "Cairo", -apple-system, "Segoe UI", Roboto, sans-serif;
   display: flex;
   flex-direction: column;
 }
@@ -110,8 +112,8 @@ body {
 a { color: var(--accent); }
 
 header {
-  padding: 10px 24px;
-  background: var(--brand);
+  padding: 12px 24px;
+  background: linear-gradient(100deg, var(--brand-start), var(--brand-end));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -125,20 +127,20 @@ header {
 }
 
 .brand-mark {
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   flex: none;
-  border-radius: 7px;
+  border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.14);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--brand-contrast);
   font-weight: 800;
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: 0;
 }
-.brand-mark img { width: 20px; height: 20px; object-fit: contain; }
+.brand-mark img { width: 22px; height: 22px; object-fit: contain; }
 
 .brand-name {
   display: flex;
@@ -148,27 +150,33 @@ header {
 }
 
 .brand-name .org {
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  color: var(--brand-contrast);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .brand-name .product {
-  font-size: 14px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.75);
+  font-size: 18px;
+  font-weight: 800;
+  color: #4ade80;
+  letter-spacing: -0.01em;
 }
+
+header nav { display: flex; gap: 8px; }
 
 header nav a {
-  margin-left: 18px;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
-  font-size: 13.5px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-header nav a:hover, header nav a.current { color: var(--brand-contrast); }
+header nav a:hover { background: rgba(255, 255, 255, 0.16); color: #fff; }
+header nav a.current { background: var(--brand-contrast); color: var(--brand-end); }
 
 main {
   max-width: 900px;
@@ -194,8 +202,8 @@ button, .btn {
   font: inherit;
   border: 1px solid var(--border);
   background: var(--bg-elevated);
-  border-radius: var(--radius-sm);
-  padding: 6px 13px;
+  border-radius: var(--radius-pill);
+  padding: 7px 15px;
   cursor: pointer;
   color: var(--text);
   text-decoration: none;
@@ -210,7 +218,7 @@ button.primary, .btn.primary {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-contrast);
-  font-weight: 600;
+  font-weight: 700;
 }
 button.primary:hover, .btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 
@@ -265,12 +273,12 @@ code { background: var(--bg-sunken); padding: 1px 5px; border-radius: 4px; font-
   flex: 1;
   min-width: 0;
   font: inherit;
-  font-weight: 600;
-  padding: 6px 8px;
+  font-weight: 700;
+  padding: 7px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   background: var(--bg-elevated);
-  color: var(--text);
+  color: var(--nav-color);
 }
 
 .icon-btn {
@@ -451,6 +459,27 @@ code { background: var(--bg-sunken); padding: 1px 5px; border-radius: 4px; font-
 .step-item:hover .step-remove { opacity: 1; }
 .step-remove:hover { color: var(--fail); background: var(--fail-bg); }
 
+.step-test {
+  flex: none;
+  padding: 3px 11px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  opacity: 0;
+}
+.step-item:hover .step-test { opacity: 1; }
+.step-test:hover { color: var(--nav-color); background: var(--nav-bg); }
+
+.selector-check-result {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.selector-check-result.ok { color: var(--ok); }
+.selector-check-result.fail { color: var(--fail); }
+.selector-check-result.warn { color: var(--assert-color); }
+
 .step-badge {
   flex: none;
   width: 34px;
@@ -550,6 +579,23 @@ code { background: var(--bg-sunken); padding: 1px 5px; border-radius: 4px; font-
 }
 .step-log-row.fail .step-log-text { color: var(--fail); }
 .step-log-text { flex: 1; min-width: 0; }
+
+.attempt-media-link { display: block; margin: 8px 0; }
+.attempt-screenshot {
+  display: block;
+  max-width: 100%;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.attempt-media { margin-top: 10px; }
+.attempt-video {
+  display: block;
+  max-width: 100%;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: #000;
+}
 
 .badge {
   display: inline-flex;
