@@ -11,12 +11,58 @@
       <h1>Qualimetry</h1>
       <nav>
         <a href="/index.html">Install</a>
+        <a href="/scenarios.html" class="current">Scenarios</a>
       </nav>
     </header>
-    <main>
-      <h2>Scenarios</h2>
-      <div id="scenarioList"></div>
-    </main>
+
+    <div class="app-shell">
+      <div class="layout">
+        <aside class="sidebar">
+          <div class="sidebar-header">
+            <div class="workspace-row">
+              <select id="appSelect" class="workspace-select"></select>
+              <button id="newAppBtn" class="ghost icon-btn" title="New workspace">+</button>
+              <button id="deleteAppBtn" class="ghost icon-btn" title="Delete this workspace">&times;</button>
+            </div>
+            <input id="search" class="sidebar-search" type="text" placeholder="Search scenarios…" />
+          </div>
+          <div id="scenarioList" class="scenario-list"></div>
+        </aside>
+
+        <section id="detail" class="detail">
+          <div class="detail-empty">Loading scenarios…</div>
+        </section>
+      </div>
+    </div>
+
+    <div id="deleteModal" class="modal-overlay" hidden>
+      <div class="modal">
+        <h3 id="deleteModalTitle">Delete?</h3>
+        <p id="deleteModalText">This can't be undone.</p>
+        <div class="modal-actions">
+          <button id="deleteCancel" class="ghost">Cancel</button>
+          <button id="deleteConfirm" class="danger">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="newAppModal" class="modal-overlay" hidden>
+      <div class="modal">
+        <h3>New workspace</h3>
+        <p>Group scenarios by the application they belong to (e.g. "Facebook", "Internal CRM").</p>
+        <label class="field">
+          <span>Application name</span>
+          <input id="newAppName" type="text" placeholder="e.g. Facebook" />
+        </label>
+        <div class="modal-actions">
+          <button id="newAppCancel" class="ghost">Cancel</button>
+          <button id="newAppConfirm" class="primary">Create</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+
     <script src="app.js"></script>
   </body>
 </html>

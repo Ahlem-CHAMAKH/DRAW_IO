@@ -3,13 +3,19 @@ import { fileURLToPath } from "node:url";
 import express, { type Request, type Response } from "express";
 import archiver from "archiver";
 import {
+  createApp as createWorkspace,
   createRun,
   createScenario,
+  deleteApp as deleteWorkspace,
   deleteScenario,
+  findOrCreateAppByName,
+  getApp as getWorkspace,
   getRun,
   getScenario,
+  listApps as listWorkspaces,
   listRuns,
   listScenarios,
+  updateApp as updateWorkspace,
   updateScenario,
 } from "./repository.js";
 import { generateSpec } from "../generate.js";
@@ -34,12 +40,47 @@ export function createApp() {
     next();
   });
 
-  app.get("/api/scenarios", (_req, res) => {
-    res.json(listScenarios());
+  app.get("/api/apps", (_req, res) => {
+    res.json(listWorkspaces());
+  });
+
+  app.post("/api/apps", (req: Request, res: Response) => {
+    const { name, description } = req.body ?? {};
+    if (typeof name !== "string" || !name.trim()) {
+      return res.status(400).json({ error: "`name` is required" });
+    }
+    const workspace = createWorkspace({
+      name,
+      description: typeof description === "string" ? description : undefined,
+    });
+    res.status(201).json(workspace);
+  });
+
+  app.get("/api/apps/:id", (req: Request, res: Response) => {
+    const workspace = getWorkspace(req.params.id);
+    if (!workspace) return res.status(404).json({ error: "Workspace not found" });
+    res.json(workspace);
+  });
+
+  app.put("/api/apps/:id", (req: Request, res: Response) => {
+    const workspace = updateWorkspace(req.params.id, req.body ?? {});
+    if (!workspace) return res.status(404).json({ error: "Workspace not found" });
+    res.json(workspace);
+  });
+
+  app.delete("/api/apps/:id", (req: Request, res: Response) => {
+    const ok = deleteWorkspace(req.params.id);
+    if (!ok) return res.status(404).json({ error: "Workspace not found" });
+    res.status(204).send();
+  });
+
+  app.get("/api/scenarios", (req: Request, res: Response) => {
+    const appId = typeof req.query.appId === "string" ? req.query.appId : undefined;
+    res.json(listScenarios(appId));
   });
 
   app.post("/api/scenarios", (req: Request, res: Response) => {
-    const { name, description, baseUrl, steps } = req.body ?? {};
+    const { name, description, baseUrl, steps, appId, appName } = req.body ?? {};
     if (typeof name !== "string" || !name.trim()) {
       return res.status(400).json({ error: "`name` is required" });
     }
@@ -49,7 +90,20 @@ export function createApp() {
     if (!Array.isArray(steps)) {
       return res.status(400).json({ error: "`steps` must be an array" });
     }
+
+    let resolvedAppId: string;
+    if (typeof appId === "string" && appId.trim()) {
+      const workspace = getWorkspace(appId);
+      if (!workspace) return res.status(400).json({ error: `Workspace "${appId}" not found` });
+      resolvedAppId = workspace.id;
+    } else if (typeof appName === "string" && appName.trim()) {
+      resolvedAppId = findOrCreateAppByName(appName).id;
+    } else {
+      return res.status(400).json({ error: "`appId` or `appName` is required" });
+    }
+
     const scenario = createScenario({
+      appId: resolvedAppId,
       name,
       description: typeof description === "string" ? description : undefined,
       baseUrl,
