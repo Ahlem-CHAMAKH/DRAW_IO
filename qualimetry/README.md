@@ -1,7 +1,8 @@
-# qualimetry
+# GOSI Qualimetry
 
-A small web app that takes the parts of Cypress and Selenium that matter most
-for day-to-day UI testing and puts them behind one workflow:
+A small web app (branded for GOSI) that takes the parts of Cypress and
+Selenium that matter most for day-to-day UI testing and puts them behind
+one workflow:
 
 1. **Record** — a browser extension captures your clicks, typing, selections,
    checkboxes, key presses, and navigations on any site you're already
@@ -156,3 +157,7 @@ See `--help` on any command for options.
   Cypress's per-test isolation model).
 - **No auth yet**: the server is single-tenant with permissive CORS, meant
   for local/trusted-network use. Add auth before exposing it publicly.
+- **Branding**: uses GOSI's Rich Blue (`#00004E`, Pantone 655C), matching
+  the color already used in GOSI's other internal tools. The header shows a
+  "G" monogram until a real logo is added — drop a file at
+  `public/gosi-logo.png` and it's picked up automatically (see `public/brand.js`).

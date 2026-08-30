@@ -5,9 +5,24 @@ body {
   color: #1a1a1a;
 }
 
-h1 {
-  font-size: 15px;
-  margin: 0 0 10px;
+.popup-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0 0 12px;
+}
+
+.popup-brand .org {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #00004e;
+}
+
+.popup-brand .product {
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
 }
 
 .field {
@@ -49,8 +64,8 @@ button {
 }
 
 button.primary {
-  background: #2563eb;
-  border-color: #2563eb;
+  background: #00004e;
+  border-color: #00004e;
   color: white;
   font-weight: 600;
 }

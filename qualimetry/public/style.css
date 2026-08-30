@@ -1,22 +1,29 @@
 :root {
   color-scheme: light;
+  /* GOSI brand — Rich Blue, Pantone 655C. Fixed across both themes, like
+     GOSI's other internal tools (Essential Viewer / Import Utility). */
+  --brand: #00004e;
+  --brand-hover: #00003a;
+  --brand-contrast: #ffffff;
+
   --bg: #f5f6f8;
   --bg-elevated: #ffffff;
   --bg-sunken: #eef0f3;
+  --sidebar-bg: #eef0fa;
   --border: #e3e5ea;
   --text: #16181d;
   --text-muted: #6b7080;
   --text-faint: #9498a3;
-  --accent: #2f5fed;
-  --accent-hover: #2650cc;
+  --accent: #00004e;
+  --accent-hover: #1a1a68;
   --accent-contrast: #ffffff;
-  --accent-soft: #ecf0ff;
+  --accent-soft: #e6e6f4;
   --ok: #157347;
   --ok-bg: #e3f6ea;
   --fail: #c22a2a;
   --fail-bg: #fdecec;
-  --nav-color: #2f5fed;
-  --nav-bg: #ecf0ff;
+  --nav-color: #00004e;
+  --nav-bg: #e6e6f4;
   --action-color: #8236d9;
   --action-bg: #f4ecfd;
   --input-color: #0f8a7a;
@@ -34,20 +41,21 @@
     --bg: #101216;
     --bg-elevated: #181b21;
     --bg-sunken: #0c0e12;
+    --sidebar-bg: #0a0c1e;
     --border: #2a2e37;
     --text: #eceef2;
     --text-muted: #9298a8;
     --text-faint: #6c7180;
-    --accent: #6789ff;
-    --accent-hover: #86a1ff;
+    --accent: #7c8cf0;
+    --accent-hover: #97a4f4;
     --accent-contrast: #0b0e14;
-    --accent-soft: #1c2440;
+    --accent-soft: #1d2050;
     --ok: #4ade80;
     --ok-bg: #113322;
     --fail: #f87171;
     --fail-bg: #3a1616;
-    --nav-color: #7fa0ff;
-    --nav-bg: #1c2440;
+    --nav-color: #97a4f4;
+    --nav-bg: #1d2050;
     --action-color: #c39bf5;
     --action-bg: #2a1f42;
     --input-color: #4fd6bd;
@@ -62,20 +70,21 @@
   --bg: #101216;
   --bg-elevated: #181b21;
   --bg-sunken: #0c0e12;
+  --sidebar-bg: #0a0c1e;
   --border: #2a2e37;
   --text: #eceef2;
   --text-muted: #9298a8;
   --text-faint: #6c7180;
-  --accent: #6789ff;
-  --accent-hover: #86a1ff;
+  --accent: #7c8cf0;
+  --accent-hover: #97a4f4;
   --accent-contrast: #0b0e14;
-  --accent-soft: #1c2440;
+  --accent-soft: #1d2050;
   --ok: #4ade80;
   --ok-bg: #113322;
   --fail: #f87171;
   --fail-bg: #3a1616;
-  --nav-color: #7fa0ff;
-  --nav-bg: #1c2440;
+  --nav-color: #97a4f4;
+  --nav-bg: #1d2050;
   --action-color: #c39bf5;
   --action-bg: #2a1f42;
   --input-color: #4fd6bd;
@@ -101,30 +110,65 @@ body {
 a { color: var(--accent); }
 
 header {
-  padding: 14px 24px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-elevated);
+  padding: 10px 24px;
+  background: var(--brand);
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex: none;
 }
 
-header h1 {
-  font-size: 16px;
-  margin: 0;
-  letter-spacing: -0.01em;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-contrast);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+.brand-mark img { width: 20px; height: 20px; object-fit: contain; }
+
+.brand-name {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  line-height: 1;
+}
+
+.brand-name .org {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--brand-contrast);
+}
+
+.brand-name .product {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 header nav a {
   margin-left: 18px;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
   font-size: 13.5px;
   font-weight: 500;
 }
 
-header nav a:hover, header nav a.current { color: var(--text); }
+header nav a:hover, header nav a.current { color: var(--brand-contrast); }
 
 main {
   max-width: 900px;
@@ -199,6 +243,7 @@ code { background: var(--bg-sunken); padding: 1px 5px; border-radius: 4px; font-
 .sidebar {
   width: 300px;
   flex: none;
+  background: var(--sidebar-bg);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -266,7 +311,7 @@ code { background: var(--bg-sunken); padding: 1px 5px; border-radius: 4px; font-
   gap: 2px;
 }
 
-.scenario-item:hover { background: var(--bg-sunken); border-color: transparent; }
+.scenario-item:hover { background: rgba(0, 0, 0, 0.05); border-color: transparent; }
 
 .scenario-item.active { background: var(--accent-soft); }
 .scenario-item.active .scenario-item-name { color: var(--accent); }
@@ -392,6 +437,20 @@ code { background: var(--bg-sunken); padding: 1px 5px; border-radius: 4px; font-
 }
 .step-item:first-child { border-top: none; }
 
+.step-text { flex: 1; min-width: 0; }
+
+.step-remove {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  font-size: 14px;
+  color: var(--text-faint);
+  opacity: 0;
+}
+.step-item:hover .step-remove { opacity: 1; }
+.step-remove:hover { color: var(--fail); background: var(--fail-bg); }
+
 .step-badge {
   flex: none;
   width: 34px;
@@ -428,15 +487,69 @@ code { background: var(--bg-sunken); padding: 1px 5px; border-radius: 4px; font-
 .code-block .copy-btn { position: absolute; top: 10px; right: 10px; font-size: 12px; padding: 4px 9px; }
 
 .run-list { list-style: none; margin: 0; padding: 0; }
-.run-list li {
+.run-item { border-top: 1px solid var(--border); }
+.run-item:first-child { border-top: none; }
+
+.run-summary {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
-  border-top: 1px solid var(--border);
   font-size: 13px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  text-align: left;
 }
-.run-list li:first-child { border-top: none; }
+.run-summary:hover { background: var(--bg-sunken); }
+
+.run-detail { padding: 2px 0 12px 4px; }
+
+.attempt-row { margin-top: 6px; }
+.attempt-row:first-child { margin-top: 0; }
+
+.attempt-summary {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 7px 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: left;
+}
+.attempt-summary.ok { color: var(--ok); }
+.attempt-summary.fail { color: var(--fail); }
+.attempt-summary .chevron { color: var(--text-faint); font-weight: 400; }
+
+.attempt-detail { padding: 8px 4px 10px; }
+
+.attempt-error {
+  color: var(--fail);
+  background: var(--fail-bg);
+  border-radius: var(--radius-sm);
+  padding: 6px 9px;
+  font-size: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 6px 0;
+}
+
+.step-log { list-style: none; margin: 6px 0 0; padding: 0; }
+.step-log-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 12px;
+}
+.step-log-row.fail .step-log-text { color: var(--fail); }
+.step-log-text { flex: 1; min-width: 0; }
 
 .badge {
   display: inline-flex;
