@@ -14,6 +14,7 @@ interface RawEmittedStep {
   selector?: string;
   selectorLabel?: string;
   value?: string;
+  redacted?: boolean;
 }
 
 /**
@@ -35,6 +36,7 @@ export async function recordScenario(opts: RecordOptions): Promise<Scenario> {
       selector: raw.selector,
       selectorLabel: raw.selectorLabel,
       value: raw.value,
+      redacted: raw.redacted,
       url,
       timestamp: Date.now(),
     });

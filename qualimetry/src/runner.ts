@@ -25,7 +25,9 @@ async function executeStep(page: Page, step: ScenarioStep, timeoutMs: number): P
       await locator!.dblclick({ timeout: timeoutMs });
       return;
     case "fill":
-      await locator!.fill(step.value ?? "", { timeout: timeoutMs });
+      await locator!.fill(step.redacted ? process.env.QUALIMETRY_SECRET ?? "" : step.value ?? "", {
+        timeout: timeoutMs,
+      });
       return;
     case "check":
       await locator!.check({ timeout: timeoutMs });

@@ -61,7 +61,12 @@ function getSelector(el) {
   return parts.join(" > ");
 }
 
+function isSensitiveField(el) {
+  return el.tagName === "INPUT" && el.type === "password";
+}
+
 function label(el) {
+  if (isSensitiveField(el)) return "Password";
   const text = el.innerText || el.value || el.getAttribute("aria-label") || el.getAttribute("placeholder") || "";
   return text.trim().slice(0, 40);
 }
@@ -99,7 +104,14 @@ document.addEventListener(
 
     if (el.tagName === "INPUT") {
       if (el.type === "checkbox" || el.type === "radio") return; // handled on click
-      emit({ type: "fill", selector: getSelector(el), value: el.value, selectorLabel: label(el) });
+      const sensitive = isSensitiveField(el);
+      emit({
+        type: "fill",
+        selector: getSelector(el),
+        value: sensitive ? "" : el.value,
+        redacted: sensitive || undefined,
+        selectorLabel: label(el),
+      });
       return;
     }
 
