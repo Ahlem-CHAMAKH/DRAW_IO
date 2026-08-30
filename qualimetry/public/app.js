@@ -25,6 +25,19 @@ let selectedScenarioId = null;
 let pendingDelete = null; // { kind: "scenario" | "app", id, name }
 let toastTimer = null;
 
+// scenarioId -> { repeat, startedAt } for runs currently in flight, so
+// switching scenarios/tabs mid-run doesn't lose track of it or let a
+// second run start against the same scenario before the first finishes.
+const runningScenarios = new Map();
+let runTickerInterval = null;
+
+function clearRunTicker() {
+  if (runTickerInterval) {
+    clearInterval(runTickerInterval);
+    runTickerInterval = null;
+  }
+}
+
 const STEP_META = {
   goto: { badge: "GO", group: "nav", verb: "Go to" },
   click: { badge: "CL", group: "action", verb: "Click" },
@@ -198,7 +211,7 @@ function renderSidebar() {
   });
 }
 
-function stepRow(step) {
+function stepRow(step, arrayIndex) {
   const meta = STEP_META[step.type] || { badge: "?", group: "action", verb: step.type };
   const targetText = step.selectorLabel || step.selector || "";
   let valueHtml = "";
@@ -212,12 +225,30 @@ function stepRow(step) {
   return `
     <li class="step-item">
       <span class="step-badge ${meta.group}">${meta.badge}</span>
-      <span>
+      <span class="step-text">
         ${esc(meta.verb)}${targetText ? ` <span class="step-target">${esc(targetText)}</span>` : ""}
         ${valueHtml ? " " + valueHtml : ""}
         ${urlHtml}
       </span>
+      <button class="ghost icon-btn step-remove" data-remove-step="${arrayIndex}" title="Remove this step">&times;</button>
     </li>`;
+}
+
+async function removeStep(scenario, arrayIndex) {
+  const newSteps = scenario.steps.filter((_, i) => i !== arrayIndex).map((s, i) => ({ ...s, index: i }));
+  try {
+    const updated = await api(`/scenarios/${scenario.id}`, {
+      method: "PUT",
+      body: JSON.stringify({ steps: newSteps }),
+    });
+    const idx = scenarios.findIndex((s) => s.id === scenario.id);
+    if (idx !== -1) scenarios[idx] = updated;
+    renderSidebar();
+    renderDetail(updated);
+    showToast("Step removed.");
+  } catch (err) {
+    showToast(`Couldn't remove step: ${err.message}`, true);
+  }
 }
 
 function switchTab(root, name) {
@@ -233,19 +264,63 @@ async function loadSpecInto(scenario, panel) {
   panel.dataset.loaded = "1";
 }
 
+function stepLogRow(step) {
+  const meta = STEP_META[step.type] || { badge: "?", group: "action" };
+  return `
+    <li class="step-log-row ${step.ok ? "ok" : "fail"}">
+      <span class="step-badge ${meta.group}">${meta.badge}</span>
+      <span class="step-log-text">
+        Step ${step.index} · ${esc(step.type)} · ${step.durationMs}ms
+        ${step.error ? `<div class="attempt-error">${esc(step.error)}</div>` : ""}
+      </span>
+    </li>`;
+}
+
+function renderAttempt(attempt) {
+  return `
+    <div class="attempt-row">
+      <button class="attempt-summary ${attempt.ok ? "ok" : "fail"}" data-toggle-attempt>
+        <span>Attempt ${attempt.attempt} — ${attempt.ok ? "PASS" : "FAIL"} (${attempt.durationMs}ms)</span>
+        <span class="chevron">▾</span>
+      </button>
+      <div class="attempt-detail" hidden>
+        ${attempt.error ? `<p class="attempt-error">${esc(attempt.error)}</p>` : ""}
+        <ul class="step-log">${attempt.steps.map(stepLogRow).join("")}</ul>
+      </div>
+    </div>`;
+}
+
+function renderRun(run) {
+  return `
+    <li class="run-item">
+      <button class="run-summary" data-toggle-run>
+        <span>${esc(fmtDate(run.startedAt))} · ${run.requestedRepeats} attempt${run.requestedRepeats === 1 ? "" : "s"}</span>
+        <span class="badge ${run.failed === 0 ? "ok" : "fail"}">${run.passed} passed / ${run.failed} failed</span>
+      </button>
+      <div class="run-detail" hidden>
+        ${run.report.attempts.map(renderAttempt).join("")}
+      </div>
+    </li>`;
+}
+
 async function loadRunsInto(scenario, panel) {
   const runs = await api(`/scenarios/${scenario.id}/runs`);
   panel.innerHTML = runs.length
-    ? `<ul class="run-list">${runs
-        .map(
-          (r) => `
-      <li>
-        <span>${esc(fmtDate(r.startedAt))} · ${r.requestedRepeats} attempt${r.requestedRepeats === 1 ? "" : "s"}</span>
-        <span class="badge ${r.failed === 0 ? "ok" : "fail"}">${r.passed} passed / ${r.failed} failed</span>
-      </li>`
-        )
-        .join("")}</ul>`
+    ? `<ul class="run-list">${runs.map(renderRun).join("")}</ul>`
     : `<p class="empty">No runs yet. Use the Run button above.</p>`;
+
+  panel.querySelectorAll("[data-toggle-run]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const detail = btn.nextElementSibling;
+      detail.hidden = !detail.hidden;
+    });
+  });
+  panel.querySelectorAll("[data-toggle-attempt]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const detail = btn.nextElementSibling;
+      detail.hidden = !detail.hidden;
+    });
+  });
 }
 
 function renderDetail(scenario) {
@@ -321,29 +396,77 @@ function renderDetail(scenario) {
     deleteModal.hidden = false;
   });
 
-  detailEl.querySelector('[data-action="run"]').addEventListener("click", async (e) => {
-    const btn = e.currentTarget;
-    const status = detailEl.querySelector('[data-role="run-status"]');
+  detailEl.querySelectorAll("[data-remove-step]").forEach((btn) => {
+    btn.addEventListener("click", () => removeStep(scenario, Number(btn.dataset.removeStep)));
+  });
+
+  detailEl.querySelector('[data-action="run"]').addEventListener("click", () => {
     const repeat = Number(detailEl.querySelector("#repeatInput").value) || 1;
-    btn.disabled = true;
+    startRun(scenario, repeat);
+  });
+
+  // If this scenario's run is still in flight (e.g. the user switched away
+  // and back), resume showing it as running instead of a fresh Run button.
+  if (runningScenarios.has(scenario.id)) {
+    const { repeat, startedAt } = runningScenarios.get(scenario.id);
+    applyRunningUI(scenario.id, repeat, startedAt);
+  }
+}
+
+function applyRunningUI(scenarioId, repeat, startedAt) {
+  if (selectedScenarioId !== scenarioId) return;
+  const btn = detailEl.querySelector('[data-action="run"]');
+  const status = detailEl.querySelector('[data-role="run-status"]');
+  if (!btn || !status) return;
+
+  btn.disabled = true;
+  clearRunTicker();
+  const tick = () => {
+    if (selectedScenarioId !== scenarioId) {
+      clearRunTicker();
+      return;
+    }
+    const elapsed = Math.round((Date.now() - startedAt) / 1000);
     status.className = "run-status";
-    status.textContent = `Running ${repeat} time(s)…`;
-    try {
-      const run = await api(`/scenarios/${scenario.id}/run`, {
-        method: "POST",
-        body: JSON.stringify({ repeat }),
-      });
+    status.textContent = `Running ${repeat} time(s)… ${elapsed}s elapsed`;
+  };
+  tick();
+  runTickerInterval = setInterval(tick, 1000);
+}
+
+function startRun(scenario, repeat) {
+  if (runningScenarios.has(scenario.id)) return; // already running, ignore duplicate clicks
+  const startedAt = Date.now();
+  runningScenarios.set(scenario.id, { repeat, startedAt });
+  applyRunningUI(scenario.id, repeat, startedAt);
+
+  api(`/scenarios/${scenario.id}/run`, { method: "POST", body: JSON.stringify({ repeat }) })
+    .then((run) => {
+      runningScenarios.delete(scenario.id);
+      showToast(`"${scenario.name}": ${run.passed} passed, ${run.failed} failed.`, run.failed > 0);
+      if (selectedScenarioId !== scenario.id) return;
+      clearRunTicker();
+      const btn = detailEl.querySelector('[data-action="run"]');
+      const status = detailEl.querySelector('[data-role="run-status"]');
+      if (!btn || !status) return;
+      btn.disabled = false;
       status.className = `run-status ${run.failed === 0 ? "ok" : "fail"}`;
       status.textContent = `${run.passed} passed, ${run.failed} failed.`;
       const runsPanel = detailEl.querySelector('.tab-panel[data-tab="runs"]');
-      if (runsPanel.classList.contains("active")) await loadRunsInto(scenario, runsPanel);
-    } catch (err) {
+      if (runsPanel && runsPanel.classList.contains("active")) loadRunsInto(scenario, runsPanel);
+    })
+    .catch((err) => {
+      runningScenarios.delete(scenario.id);
+      showToast(`"${scenario.name}" run failed: ${err.message}`, true);
+      if (selectedScenarioId !== scenario.id) return;
+      clearRunTicker();
+      const btn = detailEl.querySelector('[data-action="run"]');
+      const status = detailEl.querySelector('[data-role="run-status"]');
+      if (!btn || !status) return;
+      btn.disabled = false;
       status.className = "run-status fail";
       status.textContent = `Run failed: ${err.message}`;
-    } finally {
-      btn.disabled = false;
-    }
-  });
+    });
 }
 
 function selectScenario(id) {

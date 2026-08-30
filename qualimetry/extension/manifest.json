@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Qualimetry Recorder",
+  "name": "GOSI Qualimetry Recorder",
   "version": "0.1.0",
-  "description": "Record clicks, typing, and navigation as a qualimetry test scenario and save it to your qualimetry server.",
+  "description": "Record clicks, typing, and navigation as a GOSI Qualimetry test scenario and save it to your Qualimetry server.",
   "action": {
     "default_popup": "popup.html"
   },
