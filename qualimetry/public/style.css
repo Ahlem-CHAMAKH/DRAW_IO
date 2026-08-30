@@ -384,6 +384,7 @@ code { background: var(--bg-sunken); padding: 1px 5px; border-radius: 4px; font-
 .run-bar {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   margin: 20px 0;
   padding: 14px 16px;
@@ -404,9 +405,10 @@ code { background: var(--bg-sunken); padding: 1px 5px; border-radius: 4px; font-
   color: var(--text);
 }
 
-.run-bar input[type="password"] {
+.run-bar input[type="password"],
+.run-bar input.run-var-input {
   font: inherit;
-  width: 160px;
+  width: 150px;
   padding: 5px 8px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -511,6 +513,11 @@ code { background: var(--bg-sunken); padding: 1px 5px; border-radius: 4px; font-
 .step-target { font-weight: 600; }
 .step-value { color: var(--text-muted); }
 .step-value.redacted { color: var(--fail); font-style: italic; }
+.step-value.variable {
+  color: var(--nav-color);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight: 600;
+}
 .step-url { color: var(--text-muted); word-break: break-all; }
 
 .code-block { position: relative; }

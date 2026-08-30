@@ -84,6 +84,26 @@ user meant to check this." Add `assertText`, `assertVisible`, or `assertUrl`
 steps by hand via `PUT /api/scenarios/:id` (or the CLI's local-file flow)
 after recording.
 
+### Parameterizing recorded inputs
+
+The **Stop & review** screen lists every typed/selected field under
+**Recorded inputs**. Check **Make this a variable** on any of them, give it
+a name, and optionally mark it **Sensitive** — the literal value you typed
+is discarded and never sent to the server; only the variable name is saved.
+This isn't specific to any one field or site: use it for a username, an
+order ID, a search term, anything you want to supply differently on each
+run rather than baking in the value you happened to type while recording.
+
+Password fields (`<input type="password">`) are handled automatically —
+their real value is never captured in the first place, so they don't need
+manual parameterizing (see [Security notes](#security-notes)).
+
+At run time, the dashboard's Run bar shows one input per variable the
+scenario actually uses (sensitive ones masked), pre-labeled with its name.
+Leave one blank and it falls back to `process.env.QUALIMETRY_VAR_<NAME>` on
+the server (e.g. `QUALIMETRY_VAR_USERNAME`) — useful for unattended/CLI
+runs. The generated Playwright spec reads the same env var.
+
 ## Workspaces
 
 Scenarios are grouped by **workspace** (one per application under test).
@@ -140,7 +160,7 @@ model:
 | PUT    | `/api/scenarios/:id`                 | Update appId/name/description/baseUrl/steps |
 | DELETE | `/api/scenarios/:id`                 | Delete                                |
 | GET    | `/api/scenarios/:id/spec`            | Generated Playwright spec (text)      |
-| POST   | `/api/scenarios/:id/run`             | Replay (`{ repeat, headed, timeoutMs, stopOnFailure, secret }`) |
+| POST   | `/api/scenarios/:id/run`             | Replay (`{ repeat, headed, timeoutMs, stopOnFailure, variables }`) |
 | GET    | `/api/scenarios/:id/runs`            | Run history                           |
 | GET    | `/api/scenarios/:id/runs/:runId`     | One run's full report                 |
 | POST   | `/api/scenarios/:id/check-selector`  | Selector Playground check (`{ selector, url? }`) |
@@ -163,16 +183,15 @@ See `--help` on any command for options.
 
 ## Security notes
 
-- **Password fields are redacted at capture time.** The recorder never
-  stores the literal text typed into an `<input type="password">` — it
-  saves an empty value with a `redacted` flag. If a scenario has a
-  redacted step, the dashboard's Run bar shows a **Secret** field — type
-  the real value there and it's sent with that run request only, never
-  persisted anywhere. Without it, redacted steps fall back to
-  `process.env.QUALIMETRY_SECRET` on the server (useful for unattended/CLI
-  runs), or fill empty (login will fail, as will anything after it —
-  that's expected, not a bug). The generated Playwright script also reads
-  `process.env.QUALIMETRY_SECRET` if you export it separately.
+- **Password fields are redacted at capture time**, automatically — the
+  recorder never stores the literal text typed into an
+  `<input type="password">`. Any other field can be redacted the same way
+  manually: see [Parameterizing recorded inputs](#parameterizing-recorded-inputs).
+  A parameterized/redacted step's value is supplied per-run from the
+  dashboard's Run bar (never persisted), falling back to
+  `process.env.QUALIMETRY_VAR_<NAME>` server-side if left blank — leaving
+  both blank fills empty (login will fail, as will anything after it —
+  that's expected, not a bug).
 - The dashboard escapes all scenario-supplied text before rendering it, so
   a scenario name/description containing HTML can't inject into the page.
 

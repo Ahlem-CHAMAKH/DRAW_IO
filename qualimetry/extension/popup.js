@@ -12,6 +12,8 @@ const appNameInput = document.getElementById("appName");
 const appListEl = document.getElementById("appList");
 const scenarioNameInput = document.getElementById("scenarioName");
 const scenarioDescriptionInput = document.getElementById("scenarioDescription");
+const inputsSection = document.getElementById("inputsSection");
+const inputsList = document.getElementById("inputsList");
 const saveError = document.getElementById("saveError");
 
 let currentBaseUrl = "";
@@ -49,6 +51,7 @@ async function refresh() {
     saveSummary.textContent = `${currentSteps.length} step(s) captured from ${currentBaseUrl}. Give it a name to save.`;
     showView("save");
     await prepareSaveView();
+    renderInputsSection();
   } else {
     idleStatus.textContent = "Not recording.";
     showView("idle");
@@ -70,6 +73,92 @@ async function prepareSaveView() {
   } catch {
     // Server unreachable — the datalist just stays empty; free text still works.
   }
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[c]);
+}
+
+function suggestVariableName(step, usedNames) {
+  const base =
+    (step.selectorLabel || step.selector || "value")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_")
+      .replace(/^_+|_+$/g, "")
+      .slice(0, 24) || "value";
+  let candidate = base;
+  let n = 2;
+  while (usedNames.has(candidate)) candidate = `${base}_${n++}`;
+  usedNames.add(candidate);
+  return candidate;
+}
+
+// Lets the user flag any recorded fill/select value as a named runtime
+// variable instead of a fixed literal — not specific to any one site or
+// field. Password fields are already excluded here since content.js never
+// captures their real value in the first place (see isSensitiveField).
+function renderInputsSection() {
+  const rows = currentSteps
+    .map((step, i) => ({ step, i }))
+    .filter(({ step }) => (step.type === "fill" || step.type === "select") && !step.redacted);
+
+  if (rows.length === 0) {
+    inputsSection.hidden = true;
+    inputsList.innerHTML = "";
+    return;
+  }
+
+  const usedNames = new Set();
+  inputsSection.hidden = false;
+  inputsList.innerHTML = rows
+    .map(({ step, i }) => {
+      const label = step.selectorLabel || step.selector || "field";
+      const suggested = suggestVariableName(step, usedNames);
+      return `
+        <div class="input-row" data-step-index="${i}">
+          <div class="input-row-label">${escapeHtml(label)}: "${escapeHtml(step.value || "")}"</div>
+          <label class="input-row-check">
+            <input type="checkbox" class="param-toggle" />
+            <span>Make this a variable</span>
+          </label>
+          <div class="param-fields" hidden>
+            <input type="text" class="param-name" placeholder="variable name" value="${escapeHtml(suggested)}" />
+            <label class="param-sensitive-label">
+              <input type="checkbox" class="param-sensitive" /> Sensitive (mask value)
+            </label>
+          </div>
+        </div>`;
+    })
+    .join("");
+
+  inputsList.querySelectorAll(".param-toggle").forEach((cb) => {
+    cb.addEventListener("change", () => {
+      cb.closest(".input-row").querySelector(".param-fields").hidden = !cb.checked;
+    });
+  });
+}
+
+// Applies any "Make this a variable" choices to currentSteps before saving —
+// once parameterized, the literal typed value is cleared and never sent to
+// the server at all.
+function applyParameterization() {
+  inputsList.querySelectorAll(".input-row").forEach((row) => {
+    const toggle = row.querySelector(".param-toggle");
+    if (!toggle.checked) return;
+    const name = row.querySelector(".param-name").value.trim();
+    if (!name) return;
+    const step = currentSteps[Number(row.dataset.stepIndex)];
+    if (!step) return;
+    step.variableName = name;
+    step.sensitive = row.querySelector(".param-sensitive").checked;
+    step.value = "";
+  });
 }
 
 document.getElementById("startBtn").addEventListener("click", async () => {
@@ -115,6 +204,8 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
     saveError.hidden = false;
     return;
   }
+
+  applyParameterization();
 
   const serverUrl = serverUrlInput.value.trim().replace(/\/+$/, "");
   try {
