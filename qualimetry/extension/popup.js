@@ -8,6 +8,8 @@ const serverUrlInput = document.getElementById("serverUrl");
 const idleStatus = document.getElementById("idleStatus");
 const stepCountEl = document.getElementById("stepCount");
 const saveSummary = document.getElementById("saveSummary");
+const appNameInput = document.getElementById("appName");
+const appListEl = document.getElementById("appList");
 const scenarioNameInput = document.getElementById("scenarioName");
 const scenarioDescriptionInput = document.getElementById("scenarioDescription");
 const saveError = document.getElementById("saveError");
@@ -46,9 +48,27 @@ async function refresh() {
   } else if (currentSteps.length > 0) {
     saveSummary.textContent = `${currentSteps.length} step(s) captured from ${currentBaseUrl}. Give it a name to save.`;
     showView("save");
+    await prepareSaveView();
   } else {
     idleStatus.textContent = "Not recording.";
     showView("idle");
+  }
+}
+
+async function prepareSaveView() {
+  if (!appNameInput.value) {
+    const stored = await chrome.storage.local.get("lastAppName");
+    if (stored.lastAppName) appNameInput.value = stored.lastAppName;
+  }
+
+  const serverUrl = serverUrlInput.value.trim().replace(/\/+$/, "");
+  try {
+    const res = await fetch(`${serverUrl}/api/apps`);
+    if (!res.ok) return;
+    const apps = await res.json();
+    appListEl.innerHTML = apps.map((a) => `<option value="${a.name.replace(/"/g, "&quot;")}"></option>`).join("");
+  } catch {
+    // Server unreachable — the datalist just stays empty; free text still works.
   }
 }
 
@@ -83,7 +103,13 @@ document.getElementById("dashboardBtn").addEventListener("click", () => {
 
 document.getElementById("saveBtn").addEventListener("click", async () => {
   const name = scenarioNameInput.value.trim();
+  const appName = appNameInput.value.trim();
   saveError.hidden = true;
+  if (!appName) {
+    saveError.textContent = "Workspace (application) name is required.";
+    saveError.hidden = false;
+    return;
+  }
   if (!name) {
     saveError.textContent = "Scenario name is required.";
     saveError.hidden = false;
@@ -96,6 +122,7 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        appName,
         name,
         description: scenarioDescriptionInput.value.trim() || undefined,
         baseUrl: currentBaseUrl,
@@ -106,6 +133,7 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
       const body = await res.json().catch(() => ({}));
       throw new Error(body.error || `Server responded ${res.status}`);
     }
+    await chrome.storage.local.set({ lastAppName: appName });
     await sendToBackground({ type: "DISCARD_RECORDING" });
     scenarioNameInput.value = "";
     scenarioDescriptionInput.value = "";
