@@ -22,7 +22,8 @@ function stepLine(step) {
   const parts = [step.type];
   if (step.selectorLabel) parts.push(`"${step.selectorLabel}"`);
   else if (step.selector) parts.push(step.selector);
-  if (step.value) parts.push(`= "${step.value}"`);
+  if (step.redacted) parts.push("= ●●●●●● (redacted)");
+  else if (step.value) parts.push(`= "${step.value}"`);
   if (step.url) parts.push(step.url);
   return esc(parts.join(" "));
 }

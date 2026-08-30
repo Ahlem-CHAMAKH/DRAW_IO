@@ -14,6 +14,7 @@ function pushStep(raw, url) {
     selector: raw.selector,
     selectorLabel: raw.selectorLabel,
     value: raw.value,
+    redacted: raw.redacted,
     url,
     timestamp: Date.now(),
   });

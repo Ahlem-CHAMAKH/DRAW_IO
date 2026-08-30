@@ -16,6 +16,12 @@ function stepToLine(step: ScenarioStep): string {
     case "dblclick":
       return `  await page.locator(${sel}).dblclick();${comment}`;
     case "fill":
+      if (step.redacted) {
+        return (
+          `  await page.locator(${sel}).fill(process.env.QUALIMETRY_SECRET ?? "");` +
+          `  // ⚠ ${step.selectorLabel ?? "sensitive field"} — value was not recorded; set QUALIMETRY_SECRET`
+        );
+      }
       return `  await page.locator(${sel}).fill(${jsStr(step.value)});${comment}`;
     case "check":
       return `  await page.locator(${sel}).check();${comment}`;

@@ -47,7 +47,12 @@ export function installRecorder(): void {
     return parts.join(" > ");
   }
 
+  function isSensitiveField(el: Element): boolean {
+    return el.tagName === "INPUT" && (el as HTMLInputElement).type === "password";
+  }
+
   function label(el: Element): string {
+    if (isSensitiveField(el)) return "Password";
     const anyEl = el as HTMLInputElement;
     const text =
       (el as HTMLElement).innerText ||
@@ -105,10 +110,12 @@ export function installRecorder(): void {
       if (el.tagName === "INPUT") {
         const input = el as HTMLInputElement;
         if (input.type === "checkbox" || input.type === "radio") return; // handled on click
+        const sensitive = isSensitiveField(el);
         w.__qualimetryEmit({
           type: "fill",
           selector: getSelector(el),
-          value: input.value,
+          value: sensitive ? "" : input.value,
+          redacted: sensitive || undefined,
           selectorLabel: label(el),
         });
         return;

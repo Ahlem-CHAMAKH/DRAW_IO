@@ -21,6 +21,8 @@ export interface ScenarioStep {
   selectorLabel?: string;
   /** Value typed, selected, pressed, or asserted, depending on step type. */
   value?: string;
+  /** True if this step's real value was withheld at capture time (e.g. a password field). */
+  redacted?: boolean;
   /** Absolute URL, only for "goto" and "assertUrl" steps. */
   url?: string;
   /** Epoch ms when the step was captured. */
