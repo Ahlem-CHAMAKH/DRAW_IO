@@ -52,7 +52,10 @@ export interface RunAttemptResult {
   startedAt: string;
   durationMs: number;
   steps: StepResult[];
+  /** Relative to the server's reports/ directory, e.g. "my-scenario/attempt-1-failure.png". */
   screenshotPath?: string;
+  /** Relative to the server's reports/ directory, e.g. "my-scenario/attempt-1.webm". Recorded for every attempt. */
+  videoPath?: string;
   error?: string;
 }
 
