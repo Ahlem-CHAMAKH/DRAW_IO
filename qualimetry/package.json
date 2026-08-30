@@ -1,0 +1,26 @@
+{
+  "name": "qualimetry",
+  "version": "0.1.0",
+  "description": "Record browser actions, generate test scripts, save scenarios, and replay them repeatedly — combining the best of Cypress and Selenium.",
+  "type": "module",
+  "bin": {
+    "qualimetry": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/cli.ts",
+    "postinstall": "playwright install chromium"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.48.0",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.5",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
