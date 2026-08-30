@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Qualimetry Recorder</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <h1>Qualimetry</h1>
+
+    <label class="field">
+      <span>Server URL</span>
+      <input id="serverUrl" type="text" value="http://localhost:4300" />
+    </label>
+
+    <div id="idleView" class="view">
+      <p id="idleStatus" class="status">Not recording.</p>
+      <button id="startBtn" class="primary">Start recording</button>
+      <button id="dashboardBtn">Open dashboard</button>
+    </div>
+
+    <div id="recordingView" class="view" hidden>
+      <p class="status">
+        Recording&hellip; <strong id="stepCount">0</strong> step(s) captured.
+      </p>
+      <button id="stopBtn" class="primary">Stop &amp; review</button>
+      <button id="discardBtn">Discard</button>
+    </div>
+
+    <div id="saveView" class="view" hidden>
+      <p class="status" id="saveSummary"></p>
+      <label class="field">
+        <span>Scenario name</span>
+        <input id="scenarioName" type="text" placeholder="e.g. login flow" />
+      </label>
+      <label class="field">
+        <span>Description (optional)</span>
+        <input id="scenarioDescription" type="text" placeholder="What does this check?" />
+      </label>
+      <button id="saveBtn" class="primary">Save scenario</button>
+      <button id="cancelSaveBtn">Discard</button>
+      <p id="saveError" class="error" hidden></p>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
